@@ -6,8 +6,8 @@
 #include <iterator>
 #include <sstream>
 
-# TODO: Translate:
-#define pair std::pair <float, unsigned long>
+#is this correct?
+type pair (float, unsigned long)
 
 # TODO: Translate:
 # using namespace std;
