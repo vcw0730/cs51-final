@@ -38,7 +38,7 @@ def weighted_random (sol_lst):
         x = fitness(i)
         if pos + x >= r:
             return i
-        else
+        else:
             pos += x
     return # shouldn't get down to here because of how random and r are defined
 
@@ -49,11 +49,35 @@ def choose_parents(sol_lst):
     x2 = weighted_random(sol_lst)
     if x1 = x2:
         choose_parents(sol_lst)
-    else
+    else:
         return (x1,x2)
 
 def crossover(parents)
     # given tuple of parents generated from choose_parents, crossover
+    # using greedy crossover - choose first city of either parent at random
+    # choose next city by looking at paths for that city in both parents
+    # pick the shorter path, repeat until path is complete
+    # only choose cities that have not already appeared
+    # if both have appeared, choose a new city at random
+    r = random.randint(0,1)
+    x = (parents[r])[0]
+    child.append(x)
+    while (len(child) < len(x)):
+        next1 = parents[0][array.index(x) + 1]
+        next2 = parents[1][array.index(x) + 1]
+        if next1 in c:
+            if next2 in c:
+                # choose new city at random
+            else:
+                child.append(next2)
+                x = next2
+        else:
+            if next2 in c:
+                child.append(next1)
+                x = next1
+            else:
+                # pick city with shorter path
+    return child
 
 def mutation(sol_lst)
     # choose solution from sol_lst at random, preserve best solution
@@ -61,4 +85,10 @@ def mutation(sol_lst)
     x = random.choice(sol_lst)
     if x = best_sol(sol_lst):
         mutation(sol_lst)
-    # mutate solution
+    # mutate solution by swapping two cities at random
+    r1 = random.randint(0, len(sol_lst) - 1)
+    r2 = random.randint(0, len(sol_lst) - 1)
+    stor = sol_lst[r1]
+    sol_lst[r1] = sol_lst[r2]
+    sol_lst[r2] = stor
+    return sol_lst
