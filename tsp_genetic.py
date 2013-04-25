@@ -1,8 +1,24 @@
 import random
+from graph_dictionary import *
 
-def gen_rand_solution(locs):
+def home_graph(n):
+    return Graph(n)
+
+a = home_graph(8)
+sols = []
+
+def create_population(n):
+    for i in range(n):
+        sols.append(a.points)
+
+create_population(8)
+
+def gen_rand_solution(sol_lst):
     #locs is list of locations that must be traveled to, passed in by user (?)
-    return random.shuffle(range(len(locs)))
+    #in this case, locs = a.points
+    for i in range(len(sol_lst)):
+        random.shuffle(sol_lst[i])
+    return sol_lst
     #return list of what order to travel to locations
 
 def check_sol(sol):
@@ -12,25 +28,28 @@ def check_sol(sol):
 
 def solution_len(sol):
     x = 0
-    for i in range(len(sol) - 1) in sol:
-        x += # distance between sol[i] and sol[i+1], get info from dictionary
-    x += # add distance between sol[0] and sol[len(sol)-1]
+    for i in sol:
+        # distance between sol[i] and sol[i+1], get info from dictionary
+        x += graph.distance(sol[i],sol[i+1])
+    # add distance between sol[0] and sol[len(sol)-1]
+    x += graph.distance(sol[0], sol[len(sol)-1])
     return x
 
 def fitness(sol):
     return 1/(solution_len(sol))
 
 def best_sol(sol_lst):
-    best = sol_lst[0]
+    best = 0
     for i in sol_lst:
-        if solution_len(i) < solution_len(best):
+        if solution_len(sol_lst[i]) < solution_len(sol_lst[best]):
             best = i
-    return best
+    bsol = sol_lst[best]
+    return bsol
 
 def weighted_random (sol_lst):
     # choose a solution with probability equal to the inverse of its distance (?)
     sum = 0
-    for i in sol_lst
+    for i in sol_lst:
         sum += fitness(i)
     r = random.uniform(0,sum)
     pos = 0
@@ -47,12 +66,12 @@ def choose_parents(sol_lst):
     # return as tuple
     x1 = weighted_random(sol_lst)
     x2 = weighted_random(sol_lst)
-    if x1 = x2:
+    if x1 == x2:
         choose_parents(sol_lst)
     else:
         return (x1,x2)
 
-def crossover(parents)
+def crossover_helper(parents):
     # given tuple of parents generated from choose_parents, crossover
     # using greedy crossover - choose first city of either parent at random
     # choose next city by looking at paths for that city in both parents
@@ -66,24 +85,25 @@ def crossover(parents)
         next1 = parents[0][array.index(x) + 1]
         next2 = parents[1][array.index(x) + 1]
         if next1 in c:
-            if next2 in c:
-                # choose new city at random
-            else:
+            if not(next2 in c):
                 child.append(next2)
                 x = next2
         else:
             if next2 in c:
                 child.append(next1)
                 x = next1
-            else:
-                # pick city with shorter path
     return child
 
-def mutation(sol_lst)
+def crossover(sol_lst):
+    x = choose_parents(sol_lst)
+    crossover_helper(x)
+    return sol_lst
+
+def mutation(sol_lst):
     # choose solution from sol_lst at random, preserve best solution
     # elitism - i.e. don't mutate the solution with shortest path
     x = random.choice(sol_lst)
-    if x = best_sol(sol_lst):
+    if x == best_sol(sol_lst):
         mutation(sol_lst)
     # mutate solution by swapping two cities at random
     r1 = random.randint(0, len(sol_lst) - 1)
