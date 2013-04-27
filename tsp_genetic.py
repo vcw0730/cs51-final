@@ -100,6 +100,23 @@ def crossover_helper(parents):
     # if both have appeared, choose a new city at random
     # if neither has appeared, pick either
     # Issues: child solution doesn't have characteristics of parent
+
+    swath_start = random.randint(1, cities-1)
+    swath_end = random.randint(swath_start, cities-1)
+    # take first parent in tuple as "donor" parent, doesn't matter since "first" was arbitrarily assigned
+    donor = parents[0]
+    nondonor = parents[1]
+    swath = donor[swath_start:swath_end]
+    latter_length = len(donor) - swath_end
+    # reorder to make it easier to concat afterwards
+    reordered = nondonor[swath_end:] + nondonor[:swath_end]
+    filtered = filter(lambda x: x not in swath, reordered)
+
+    child = filtered[-swath_start:] + swath + filtered[:latter_length]
+
+    return child
+   
+    """
     x = random.choice(parents)
     x = x[0]
     child = []
@@ -121,6 +138,7 @@ def crossover_helper(parents):
             child.append(next1)
             x = next1
     return child
+    """
 
 def crossover(sol_lst):
     # using helper functions, choose two parent solutions and crossover
