@@ -7,7 +7,6 @@ def home_graph(n):
 cities = int(input("Number of cities to visit: "))
 a = home_graph(cities)
 sols = []
-print ("dkslahfl")
 
 def create_population(n):
     for i in range(n):

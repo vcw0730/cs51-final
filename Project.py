@@ -3,8 +3,6 @@ from shortest_path_withlog import *
 
 solution = []
 
-print ("aslkdhf")
-
 def update_solution(newsol):
     global solution
     solution = newsol
