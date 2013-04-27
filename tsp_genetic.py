@@ -104,20 +104,19 @@ def crossover_helper(parents):
     # take first parent in tuple as "donor" parent, doesn't matter since "first" was arbitrarily assigned
     donor = parents[0]
     nondonor = parents[1]
-    swath = donor[swath_start:swath_end]
-    latter_length = len(donor) - swath_end
-
+    swath = donor[swath_start-1:swath_end]
     filtered = filter(lambda x: x not in swath, nondonor)
 
-    child = filtered[:swath_start] + swath + filtered[swath_start:]
+    child = filtered[:swath_start-1] + swath + filtered[swath_start-1:]
     '''
+    latter_length = len(donor) - swath_end
     # reorder to make it easier to concat afterwards
     reordered = nondonor[swath_end:] + nondonor[:swath_end]
     filtered = filter(lambda x: x not in swath, reordered)
 
     child = filtered[-swath_start:] + swath + filtered[:latter_length]
     '''
-
+    
     return child
 
 
