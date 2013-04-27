@@ -7,17 +7,10 @@ def home_graph(n):
 cities = int(input("Number of cities to visit: "))
 a = home_graph(cities)
 sols = []
-start_end = a.points[0]
-city_lst = a.points
-city_lst.remove(start_end)
-
-def update_start_end(coords):
-    global start_end
-    start_end = coords
 
 def create_population(n):
     for i in range(n):
-        x = list(city_lst)
+        x = list(a.points)
         sols.append(x)
 
 def shuffle_sol(sol):
@@ -44,10 +37,9 @@ def solution_len(sol):
     x = 0
     for i in (range(len(sol) - 2)):
         # distance between sol[i] and sol[i+1], get info from dictionary
-        x += Graph.distance(a, sol[i],sol[i+1])
+        x += Graph.distance(i, sol[i],sol[i+1])
     # add distance between sol[0] and sol[len(sol)-1]
-    x += Graph.distance(a, start_end, sol[len(sol)-1])
-    x += Graph.distance(a, sol[0], start_end)
+    x += Graph.distance(i, sol[0], sol[len(sol)-1])
     return x
 
 def fitness(sol):
@@ -112,9 +104,9 @@ def crossover_helper(parents):
     x = x[0]
     child = []
     child.append(x)
-    while (len(child) < (cities - 1)):
-        next1 = parents[0][(parents[0].index(x) + 1) % (cities-1)]
-        next2 = parents[1][(parents[1].index(x) + 1) % (cities-1)]
+    while (len(child) < len(parents[1])):
+        next1 = parents[0][(parents[0].index(x) + 1) % cities]
+        next2 = parents[1][(parents[1].index(x) + 1) % cities]
         if next1 in child:
             if next2 in child:
                 r = random.randint(0,1)
@@ -147,8 +139,8 @@ def mutation(sol_lst):
     if x == best_sol(sol_lst):
         mutation(sol_lst)
     # mutate solution by swapping two cities at random
-    r1 = random.randint(0, cities - 2)
-    r2 = random.randint(0, cities - 2)
+    r1 = random.randint(0, cities - 1)
+    r2 = random.randint(0, cities - 1)
     stor = x[r1]
     x[r1] = x[r2]
     x[r2] = stor
