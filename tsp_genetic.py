@@ -4,7 +4,7 @@ from graph_dictionary import *
 def home_graph(n):
     return Graph(n)
 
-cities = 5
+cities = int(input("Number of cities to visit: "))
 a = home_graph(cities)
 sols = []
 
@@ -27,8 +27,6 @@ def gen_population(n):
         sol_lst[i] = shuffle_sol(sol_lst[i])
     return sol_lst
     #return list of what order to travel to locations
-
-gen_population(8)
 
 def check_sol(sol):
     #check that every step in solution given is possible, return boolean
@@ -53,7 +51,7 @@ def best_sol(sol_lst):
         if solution_len(sol_lst[i]) < solution_len(sol_lst[best]):
             best = i
     # bsol = sol_lst[best]
-    # returns best solution and also its position in the array as a tuple
+    # returns position in the array of the best solution
     return best
 
 def print_lengths(sol_lst):
@@ -77,7 +75,7 @@ def weighted_random (sol_lst):
     return # shouldn't get down to here because of how random and r are defined
 
 def choose_parents(sol_lst):
-    # choose parents from solution list with probability based on their length
+    # choose parents from solution list with probability based on their length/fitness
     # return as tuple
     x1 = 0
     x2 = 0
@@ -101,6 +99,7 @@ def crossover_helper(parents):
     # only add new city if city has not already appeared
     # if both have appeared, choose a new city at random
     # if neither has appeared, pick either
+    # Issues: child solution doesn't have characteristics of parent
     x = random.choice(parents)
     x = x[0]
     child = []
@@ -146,3 +145,10 @@ def mutation(sol_lst):
     x[r1] = x[r2]
     x[r2] = stor
     return x
+
+def run_gen(num):
+    for i in range(num):
+        crossover(sols)
+        mutation(sols)
+        mutation(sols)
+    return
