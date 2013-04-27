@@ -93,6 +93,34 @@ def get_rand(parentsol, child):
     return parentsol[r]
 
 def crossover_helper(parents):
+    # implements order crossover (OX) algorithm
+    # randomly picks an swath of "genes" in one parent and puts that in same location in child
+    # rest of child is comprised of other parent's genes
+
+    # start, end represent absolute positions in list not indices
+    # cities-2 as upper bound for start and start+1 as lower for end ensure swath is at least 1 long
+    swath_start = random.randint(1, cities-2)
+    swath_end = random.randint(swath_start+1, cities-1)
+    # take first parent in tuple as "donor" parent, doesn't matter since "first" was arbitrarily assigned
+    donor = parents[0]
+    nondonor = parents[1]
+    swath = donor[swath_start:swath_end]
+    latter_length = len(donor) - swath_end
+
+    filtered = filter(lambda x: x not in swath, nondonor)
+
+    child = filtered[:swath_start] + swath + filtered[swath_start:]
+    '''
+    # reorder to make it easier to concat afterwards
+    reordered = nondonor[swath_end:] + nondonor[:swath_end]
+    filtered = filter(lambda x: x not in swath, reordered)
+
+    child = filtered[-swath_start:] + swath + filtered[:latter_length]
+    '''
+
+    return child
+
+
     # given tuple of parents generated from choose_parents, crossover
     # choose first city of either parent at random
     # add consecutive cities by finding the city after it in either parent
@@ -100,21 +128,6 @@ def crossover_helper(parents):
     # if both have appeared, choose a new city at random
     # if neither has appeared, pick either
     # Issues: child solution doesn't have characteristics of parent
-
-    swath_start = random.randint(1, cities-1)
-    swath_end = random.randint(swath_start, cities-1)
-    # take first parent in tuple as "donor" parent, doesn't matter since "first" was arbitrarily assigned
-    donor = parents[0]
-    nondonor = parents[1]
-    swath = donor[swath_start:swath_end]
-    latter_length = len(donor) - swath_end
-    # reorder to make it easier to concat afterwards
-    reordered = nondonor[swath_end:] + nondonor[:swath_end]
-    filtered = filter(lambda x: x not in swath, reordered)
-
-    child = filtered[-swath_start:] + swath + filtered[:latter_length]
-
-    return child
    
     """
     x = random.choice(parents)
