@@ -31,9 +31,10 @@ def run_genetic():
 def print_path():
     global solution
     print ("Path: ")
+    print ("1:",start_end)
     for i in range(len(solution)):
-        print (i+1,":",solution[i])
-    print (len(solution)+1,":",solution[0])
+        print (i+2,":",solution[i])
+    print (len(solution)+2,":",start_end)
 
 
 prompt = "Which algorithm would you like to use? \n 1: Genetic\n 2: Dynamic\n--> "
