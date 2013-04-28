@@ -18,8 +18,8 @@ def update_solution(newsol):
 
 def update_cities(n):
     global cities
-    while n < 3:
-        n = int(input("Please enter a number greater than 2! "))
+    while n < 2:
+        n = int(input("Please enter a number greater than 1! "))
     cities = n
     return
 
@@ -145,8 +145,8 @@ print("Initializing...")
 
 prompt1 = "How many cities would you like to visit? "
 cities = int(input(prompt1))
-while (cities < 3):
-    cities = int(input("Please choose a number greater than 2! "))
+while (cities < 2):
+    cities = int(input("Please choose a number greater than 1! "))
 a = Graph(cities)
 locs = a.points
 start_end = locs[0]
