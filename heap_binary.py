@@ -4,10 +4,16 @@ class BinaryHeap(object):
     def __init__(self):
         self.heap = []
 
+    # * * * * *
+    # Pushes an element into the heap
+    # * * * * *
     def push(self, x):
         self.heap.append(x)
         self.heapifyUp(self.size() - 1)
 
+    # * * * * *
+    # Pops an element out of the heap
+    # * * * * *
     def pop(self):
         min = self.heap[0]
         self.heap[0] = self.heap[self.size() - 1]
@@ -16,6 +22,9 @@ class BinaryHeap(object):
             self.heapifyDown(0)
         return min
 
+    # * * * * *
+    # returns the size of the heap
+    # * * * * * 
     def size(self):
         return len(self.heap)
 
@@ -28,8 +37,6 @@ class BinaryHeap(object):
         else:
             return i
             
-        
-
     def parent (self, child):
         if (child != 0):
             i = (child - 1) >> 1
@@ -58,7 +65,7 @@ class BinaryHeap(object):
     # children have lower priority, it is swapped, and is 
     # repeated for newly swapped nodes until heap is
     # re-established 
-    # * * * * */
+    # * * * * *
     
     def heapifyDown (self, current):
         while ((current << 1) + 1) <= (self.size() - 1):
@@ -67,6 +74,11 @@ class BinaryHeap(object):
                 self.heap[current], self.heap[child] = self.heap[child], self.heap[current]
             current = child
     
+
+    # * * * * *
+    # Defines a functional call which allows us to check
+    # whether the BinaryHeap is working properly
+    # * * * * *
 
 def main():
     a = BinaryHeap()

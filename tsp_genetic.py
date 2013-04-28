@@ -4,13 +4,16 @@ from graph_dictionary import *
 def home_graph(n):
     return Graph(n)
 
-cities = 5
+cities = int(input("Number of cities to visit: "))
 a = home_graph(cities)
 sols = []
+locs = a.points
+start_end = locs[0]
+locs.remove(start_end)
 
 def create_population(n):
     for i in range(n):
-        x = list(a.points)
+        x = list(locs)
         sols.append(x)
 
 def shuffle_sol(sol):
@@ -28,20 +31,18 @@ def gen_population(n):
     return sol_lst
     #return list of what order to travel to locations
 
-gen_population(8)
-
 def check_sol(sol):
     #check that every step in solution given is possible, return boolean
     #use to propagate list of solutions, call in mutate/crossover
     return True
 
 def solution_len(sol):
-    x = 0
+    x = Graph.distance(a, start_end, sol[0])
     for i in (range(len(sol) - 2)):
         # distance between sol[i] and sol[i+1], get info from dictionary
-        x += Graph.distance(i, sol[i],sol[i+1])
+        x += Graph.distance(a, sol[i],sol[i+1])
     # add distance between sol[0] and sol[len(sol)-1]
-    x += Graph.distance(i, sol[0], sol[len(sol)-1])
+    x += Graph.distance(a, sol[len(sol)-1], start_end)
     return x
 
 def fitness(sol):
@@ -53,7 +54,7 @@ def best_sol(sol_lst):
         if solution_len(sol_lst[i]) < solution_len(sol_lst[best]):
             best = i
     # bsol = sol_lst[best]
-    # returns best solution and also its position in the array as a tuple
+    # returns position in the array of the best solution
     return best
 
 def print_lengths(sol_lst):
@@ -77,7 +78,7 @@ def weighted_random (sol_lst):
     return # shouldn't get down to here because of how random and r are defined
 
 def choose_parents(sol_lst):
-    # choose parents from solution list with probability based on their length
+    # choose parents from solution list with probability based on their length/fitness
     # return as tuple
     x1 = 0
     x2 = 0
@@ -95,12 +96,42 @@ def get_rand(parentsol, child):
     return parentsol[r]
 
 def crossover_helper(parents):
+    # implements order crossover (OX) algorithm
+    # randomly picks an swath of "genes" in one parent and puts that in same location in child
+    # rest of child is comprised of other parent's genes
+
+    # start, end represent absolute positions in list not indices
+    # cities-2 as upper bound for start and start+1 as lower for end ensure swath is at least 1 long
+    swath_start = random.randint(1, cities-2)
+    swath_end = random.randint(swath_start+1, cities-1)
+    # take first parent in tuple as "donor" parent, doesn't matter since "first" was arbitrarily assigned
+    donor = parents[0]
+    nondonor = parents[1]
+    swath = donor[swath_start-1:swath_end]
+    filtered = list(filter(lambda x: x not in swath, nondonor))
+
+    child = filtered[:swath_start-1] + swath + filtered[swath_start-1:]
+    '''
+    latter_length = len(donor) - swath_end
+    # reorder to make it easier to concat afterwards
+    reordered = nondonor[swath_end:] + nondonor[:swath_end]
+    filtered = filter(lambda x: x not in swath, reordered)
+
+    child = filtered[-swath_start:] + swath + filtered[:latter_length]
+    '''
+    
+    return child
+
+
     # given tuple of parents generated from choose_parents, crossover
     # choose first city of either parent at random
     # add consecutive cities by finding the city after it in either parent
     # only add new city if city has not already appeared
     # if both have appeared, choose a new city at random
     # if neither has appeared, pick either
+    # Issues: child solution doesn't have characteristics of parent
+   
+    """
     x = random.choice(parents)
     x = x[0]
     child = []
@@ -122,6 +153,7 @@ def crossover_helper(parents):
             child.append(next1)
             x = next1
     return child
+    """
 
 def crossover(sol_lst):
     # using helper functions, choose two parent solutions and crossover
@@ -136,13 +168,20 @@ def mutation(sol_lst):
     # choose solution from sol_lst at random, preserve best solution
     # should not change size of sol_lst
     # elitism - i.e. don't mutate the solution with shortest path
-    x = random.choice(sol_lst)
-    if x == best_sol(sol_lst):
-        mutation(sol_lst)
+    x = sol_lst[best_sol(sol_lst)]
+    while (x == sol_lst[best_sol(sol_lst)]):
+        x = random.choice(sol_lst)
     # mutate solution by swapping two cities at random
-    r1 = random.randint(0, cities - 1)
-    r2 = random.randint(0, cities - 1)
+    r1 = random.randint(0, cities - 2)
+    r2 = random.randint(0, cities - 2)
     stor = x[r1]
     x[r1] = x[r2]
     x[r2] = stor
     return x
+
+def run_gen(num):
+    for i in range(num):
+        crossover(sols)
+        mutation(sols)
+        mutation(sols)
+    return
