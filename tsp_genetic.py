@@ -7,10 +7,13 @@ def home_graph(n):
 cities = int(input("Number of cities to visit: "))
 a = home_graph(cities)
 sols = []
+locs = a.points
+start_end = locs[0]
+locs.remove(start_end)
 
 def create_population(n):
     for i in range(n):
-        x = list(a.points)
+        x = list(locs)
         sols.append(x)
 
 def shuffle_sol(sol):
@@ -34,12 +37,12 @@ def check_sol(sol):
     return True
 
 def solution_len(sol):
-    x = 0
+    x = Graph.distance(a, start_end, sol[0])
     for i in (range(len(sol) - 2)):
         # distance between sol[i] and sol[i+1], get info from dictionary
-        x += Graph.distance(i, sol[i],sol[i+1])
+        x += Graph.distance(a, sol[i],sol[i+1])
     # add distance between sol[0] and sol[len(sol)-1]
-    x += Graph.distance(i, sol[0], sol[len(sol)-1])
+    x += Graph.distance(a, sol[len(sol)-1], start_end)
     return x
 
 def fitness(sol):
@@ -105,7 +108,7 @@ def crossover_helper(parents):
     donor = parents[0]
     nondonor = parents[1]
     swath = donor[swath_start-1:swath_end]
-    filtered = filter(lambda x: x not in swath, nondonor)
+    filtered = list(filter(lambda x: x not in swath, nondonor))
 
     child = filtered[:swath_start-1] + swath + filtered[swath_start-1:]
     '''
@@ -165,12 +168,12 @@ def mutation(sol_lst):
     # choose solution from sol_lst at random, preserve best solution
     # should not change size of sol_lst
     # elitism - i.e. don't mutate the solution with shortest path
-    x = random.choice(sol_lst)
-    if x == best_sol(sol_lst):
-        mutation(sol_lst)
+    x = sol_lst[best_sol(sol_lst)]
+    while (x == sol_lst[best_sol(sol_lst)]):
+        x = random.choice(sol_lst)
     # mutate solution by swapping two cities at random
-    r1 = random.randint(0, cities - 1)
-    r2 = random.randint(0, cities - 1)
+    r1 = random.randint(0, cities - 2)
+    r2 = random.randint(0, cities - 2)
     stor = x[r1]
     x[r1] = x[r2]
     x[r2] = stor

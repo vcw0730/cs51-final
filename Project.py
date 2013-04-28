@@ -8,11 +8,11 @@ def update_solution(newsol):
     solution = newsol
     return
 
-def choose_algorithm(x):
+def choose_option(x):
     if x == 1:
         run_genetic()
     else:
-        # run dynamic
+        # if x == 2: run dynamic
         return
 
 def run_genetic():
@@ -38,5 +38,5 @@ def print_path():
 
 
 prompt = "Which algorithm would you like to use? \n 1: Genetic\n 2: Dynamic\n--> "
-choose_al = int(input(prompt))
-choose_algorithm(choose_al)
+option = int(input(prompt))
+choose_option(option)
