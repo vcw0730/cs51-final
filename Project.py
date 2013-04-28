@@ -18,6 +18,8 @@ def update_solution(newsol):
 
 def update_cities(n):
     global cities
+    while n < 3:
+        n = int(input("Please enter a number greater than 2! "))
     cities = n
     return
 
