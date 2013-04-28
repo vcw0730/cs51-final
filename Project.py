@@ -118,7 +118,7 @@ def run_genetic():
     gen_population(get_cities(), get_locs(), sols)
     children = int(input("How many rounds to run genetic? "))
     print ("Running... ")
-    run_gen(children,sols,get_graph(),get_start_end(),get_cities())
+    run_gen(children,sols,get_graph(),get_start_end(),get_cities(),get_locs())
     x = best_sol(sols,get_graph(),get_start_end())
     solution = sols[x]
     update_solution(solution)
@@ -143,6 +143,8 @@ print("Initializing...")
 
 prompt1 = "How many cities would you like to visit? "
 cities = int(input(prompt1))
+while (cities < 3):
+    cities = int(input("Please choose a number greater than 2! "))
 a = Graph(cities)
 locs = a.points
 start_end = locs[0]

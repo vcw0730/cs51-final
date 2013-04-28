@@ -185,10 +185,30 @@ def mutation(sol_lst, a, initial):
     x[r2] = stor
     return x
 
-def run_gen(num, sols, a, start_end, cities):
+def factorial (n):
+    if n < 2:
+        return 0
+    else:
+        return n * factorial(n-1)
+
+def max_num(sols, cities):
+    limit = factorial(cities)
+    if (len(sols) < limit):
+        return False
+    else:
+        return True
+
+def run_gen(num, sols, a, start_end, cities, locs):
     # use to run genetic
-    for i in range(num):
-        crossover(sols, a, start_end,cities)
-        mutation(sols, a, start_end)
-        mutation(sols, a, start_end)
-    return
+    if (cities < 2):
+        sols.append(locs)
+        return
+    else:
+        for i in range(num):
+            if max_num(sols, cities):
+                return
+            else:
+                crossover(sols, a, start_end, cities)
+                mutation(sols, a, start_end)
+                mutation(sols, a, start_end)
+        return
