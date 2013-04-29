@@ -1,3 +1,5 @@
+from heap_binary import *
+
 def greedy (G):
   
     not_used = []

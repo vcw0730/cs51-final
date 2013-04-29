@@ -1,5 +1,5 @@
 from tsp_genetic import *
-from shortest_path_withlog import *
+from tsp_dynamic import *
 
 solution = []
 
@@ -60,14 +60,15 @@ def get_start_end():
 
 def choose_option():
     # use this for UI so user can choose algorithm
-    prompt = """What would you like to do?
-    1: Run genetic
-    2: Run dynamic
-    3: View current path
-    4: Update number of cities
-    5: Update itinerary
-    6: Change initial city
-    0: Quit\n--> """
+    prompt = "What would you like to do? \n \
+    0: Run greedy \n \
+    1: Run genetic \n \
+    2: Run dynamic \n \
+    3: View current path \n \
+    4: Update number of cities \n \
+    5: Update itinerary \n \
+    6: Change initial city \n \
+    0: Quit\n--> " 
     x = int(input(prompt))
     if x == 0:
         return
@@ -75,7 +76,16 @@ def choose_option():
         global sols
         sols = []
         run_genetic()
-    # if x == 2: clear solutions, run dynamic
+    if x == 2:
+        if x > 25:
+            y = int(input("Remember that the Dynamic Programming solution takes space on the scale of O(n * 2^n) and \
+                 run time on the scale of O(n^2 * 2^n), so please choose a smaller value!"))
+            update_cities(y)
+            update_graph(y)
+        dynamic_result = tsp_dynamic(get_graph())
+        # visualize(dynamic_result)
+        print "The minimum total distance is ", dynamic_result[1]
+        print "Your path through the points will be ", dynamic_result[0], "\n"
     if x == 3:
         print_path()
     if x == 4:
@@ -141,16 +151,19 @@ def print_path():
 
 
 # main body
-print("Initializing...")
+def main():
+    print("Initializing...")
 
-prompt1 = "How many cities would you like to visit? "
-cities = int(input(prompt1))
-while (cities < 2):
-    cities = int(input("Please choose a number greater than 1! "))
-a = Graph(cities)
-locs = a.points
-start_end = locs[0]
-locs.remove(start_end)
+    prompt1 = "How many cities would you like to visit? "
+    cities = int(input(prompt1))
+    while (cities < 2):
+        cities = int(input("Please choose a number greater than 1! "))
+    a = Graph(cities)
+    locs = a.points
+    start_end = locs[0]
+    locs.remove(start_end)
 
-choose_option()
+    choose_option()
 
+if __name__ == "__main__":
+    main()
