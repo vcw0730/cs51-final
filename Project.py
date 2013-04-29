@@ -1,5 +1,6 @@
 from tsp_genetic import *
 from tsp_dynamic import *
+from greedy import *
 
 solution = []
 
@@ -71,8 +72,15 @@ def choose_option():
     0: Quit\n--> " 
     x = int(input(prompt))
     if x == 0:
-        return
-    if x == 1:
+        if x > 25:
+            y = int(input("Remember that the Greedy solution has a \n \
+            run time on the scale of O(n-1!), so please choose a smaller value!"))
+            update_cities(y)
+            update_graph(y)
+        greedy_result = greedy(get_graph())
+        print "The minimum total distance is ", greedy_result[1]
+        print "Your path through the points will be ", greedy_result[0], "\n"
+    if x == 1:15
         global sols
         sols = []
         run_genetic()
