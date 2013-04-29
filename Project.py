@@ -80,7 +80,7 @@ def choose_option():
         greedy_result = greedy(get_graph())
         print "The minimum total distance is ", greedy_result[1]
         print "Your path through the points will be ", greedy_result[0], "\n"
-    if x == 1:15
+    if x == 1:
         global sols
         sols = []
         run_genetic()
