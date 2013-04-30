@@ -68,6 +68,8 @@ class Ant(object):
             denom = 0.0
             for i in range(len(possible)):
                 denom += pher_matrix[curr][i] * (Graph.distance(home_graph,locs_lst[curr],locs_lst[i]) ** wd)
+            if denom == 0.0:
+                return [0.0]
             for i in range(len(prob_lst)):
                 prob_lst[i] = (pher_matrix[curr][i] * (Graph.distance(home_graph,locs_lst[curr],locs_lst[i]) ** 5)/ denom)
         return [0.0]

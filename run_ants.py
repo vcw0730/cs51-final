@@ -9,9 +9,9 @@ def main():
     best_ant = 0 #position in ants of ant with best path
 
     for j in range(run):
-        start = locs_lst[0]
 #        print("Round",j+1)
         for i in range(len(ants)):
+            start = locs_lst[i]
             ants[i] = Ant(start)
 #            print ("Ant",i,"running...")
             curr_ant = ants[i]
@@ -22,8 +22,11 @@ def main():
                 best_ant = i
                 best_sol = curr_ant.path
                 best_dist = length
-        ants[0].evaporate_pher() # since it doesn't matter which ant calls it
-        ants[best_ant].deposit_ant_pher()
+                print(i,"update!")
+                ants[i].deposit_ant_pher()
+            ants[i].evaporate_pher()
+#        ants[0].evaporate_pher() # since it doesn't matter which ant calls it
+#        ants[best_ant].deposit_ant_pher()
 
     print("Best solution found:",best_sol)
     print("Total distance:",best_dist)
