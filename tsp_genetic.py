@@ -20,10 +20,8 @@ def gen_population(n, lst, sols):
     # initial generation if needed
     # locs is list of locations that must be traveled to, passed in by user
     x = len(sols)
-    print ("Initial population:",x)
     # populate sols with n identical solutions
     create_population(n, lst, sols)
-    print ("After creation:",len(sols))
     for i in range(len(sols) - 1):
         sols[i] = shuffle_sol(sols[i])
     assert len(sols) == n+x
@@ -114,7 +112,7 @@ def crossover_helper(parents,cities):
     donor = parents[0]
     nondonor = parents[1]
     swath = donor[swath_start-1:swath_end]
-    filtered = list(filter(lambda x: x not in swath, nondonor))
+    filtered = filter(lambda x: x not in swath, nondonor)
 
     child = filtered[:swath_start-1] + swath + filtered[swath_start-1:]
     '''

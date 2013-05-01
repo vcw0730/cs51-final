@@ -7,6 +7,7 @@ def main():
     best_dist = max_sol_len
     ants = [None] * max_ants
     best_ant = 0 #position in ants of ant with best path
+    starting = locs_lst[0]
 
     for j in range(run):
 #        print("Round",j+1)
@@ -20,7 +21,7 @@ def main():
             length = curr_ant.update_dist()
             if length < best_dist:
                 best_ant = i
-                best_sol = curr_ant.path
+                best_sol = curr_ant.reorder_path(starting)
                 best_dist = length
                 print(i,"update!")
                 ants[i].deposit_ant_pher()

@@ -30,6 +30,18 @@ class Ant(object):
         assert self.path[0] == initial_city
         self.current_step += 1
 
+    def reorder_path (self, initial_city):
+        assert initial_city in locs_lst
+        x = locs_lst.index(initial_city)
+        if x == 0:
+            return self.path
+        else:
+            lst1 = locs_lst[:(x-1)]
+            lst2 = locs_lst[x:]
+            newlst = x + lst + lst1
+            self.path = newlst
+            return self.path
+
     def update_dist (self):
         assert self.current_step == cities
         for i in range(len(self.path) - 2):
