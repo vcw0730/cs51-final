@@ -4,15 +4,16 @@ from greedy import *
 from PIL import Image, ImageDraw
 
 solution = []
-
+"""
 # genetic values
 sols = []
-cities = 5
-a = Graph(5)
-locs = a.points
-start_end = locs[0]
-locs.remove(locs[0])
+# cities = 5
+# a = Graph(5)
+# locs = a.points
+# start_end = locs[0]
+# locs.remove(locs[0])
 dist = None
+"""
 
 def update_solution(newsol):
     global solution
@@ -70,6 +71,13 @@ def get_dist():
     global dist
     return dist
 
+def reorder_sol(sol,initial):
+    assert initial in sol
+    x = sol.index(initial)
+    newsol = sol[x:] + sol[:x]
+    update_solution(newsol)
+    return newsol
+
 def choose_option():
     # use this for UI so user can choose algorithm
     prompt = "What would you like to do? \n \
@@ -89,31 +97,44 @@ def choose_option():
             update_cities(y)
             update_graph(y)
         greedy_result = greedy(get_graph())
+        print greedy_result[0]
+
+        # standardize output so that start_end is the same, sol = list of cities from 2 - #cities
+        greedy_sol = reorder_sol(greedy_result[0],get_start_end())
+        greedy_sol.remove(greedy_sol[0])
+        update_solution(greedy_sol)
         update_dist(greedy_result[1])
-        sol = greedy_result[0]
-        sol.remove(sol[0])
-        update_solution(sol)
+
         print "The minimum total distance is ", greedy_result[1]
-        print "Your path through the points will be ", greedy_result[0], "\n"
-    if x == 2:
+        print get_start_end(), get_solution()
+#        print "Your path through the points will be ", greedy_result[0], "\n"
+    elif x == 2:
         global sols
         sols = []
         run_genetic()
-    if x == 3:
+        print get_start_end(), get_solution()
+    elif x == 3:
         if x > 25:
             y = int(raw_input("Remember that the Dynamic Programming solution takes space on the scale of O(n * 2^n) and \
                  run time on the scale of O(n^2 * 2^n), so please choose a smaller value!"))
             update_cities(y)
             update_graph(y)
         dynamic_result = tsp_dynamic(get_graph())
-        # visualize(dynamic_result)
+
+        dyn_sol = dynamic_result[0]
+        print dyn_sol
+        dyn_sol.remove(dyn_sol[-1])
+        dyn_sol = reorder_sol(dyn_sol,get_start_end())
+        dyn_sol.remove(dyn_sol[0])
+        update_solution(dyn_sol)
         update_dist(dynamic_result[1])
-        update_solution(dynamic_result[0])
+
         print "The minimum total distance is ", dynamic_result[1]
-        print "Your path through the points will be ", dynamic_result[0], "\n"
-    if x == 4:
+#        print "Your path through the points will be ", dynamic_result[0], "\n"
+        print get_start_end(), get_solution()
+    elif x == 4:
         print_path()
-    if x == 5:
+    elif x == 5:
         y = int(raw_input("How many cities should be traveled to? This will randomize the cities again. \n--> "))
         update_cities(y)
         update_graph(y)
@@ -124,7 +145,7 @@ def choose_option():
         update_start_end(start_end)
         assert(len(locs) == y - 1)
         assert(start_end not in locs)
-    if x == 6:
+    elif x == 6:
         cities = int(raw_input("How many cities will you travel to? This does not include the initial city.\n --> "))
         locations = []
         for i in range(1,cities+1):
@@ -135,7 +156,7 @@ def choose_option():
         assert (len(locations) == cities)
         update_locs(locations)
         update_cities(cities+1)
-    if x == 7:
+    elif x == 7:
         y = int(input("Which city out of the current solutions do you want to make the intial city? Enter its position in the current path.\n --> "))
         while (y < 1 or y > len(solution) + 2):
             y = int(raw_input("Try again! "))
@@ -148,7 +169,7 @@ def choose_option():
         locs[locs.index(city)] = temp
         update_start_end(city)
         update_locs(locs)
-    if x == 0:
+    elif x == 0:
         return
 
     choose_option()
@@ -211,12 +232,15 @@ def create_png():
 def main():
     print("Initializing...")
 
+    global a, cities, locs, start_end, sols, dist
+
     prompt1 = "How many cities would you like to visit? "
     cities = int(raw_input(prompt1))
     while (cities < 2):
         cities = int(raw_input("Please choose a number greater than 1! "))
     a = Graph(cities)
     locs = a.points
+    print locs
     start_end = locs[0]
     locs.remove(start_end)
     assert(len(locs) == cities - 1)
