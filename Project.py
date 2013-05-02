@@ -2,6 +2,7 @@ from tsp_genetic import *
 from tsp_dynamic import *
 from greedy import *
 from PIL import Image, ImageDraw
+import time
 
 solution = []
 
@@ -62,6 +63,9 @@ def get_dist():
     return dist
 
 def reorder_sol(sol,initial):
+    # given a solution and an initial city, reorders list so that
+    # initial city is at the front but otherwise unchanged
+    # except it returns all the cities *after* initial
     assert initial in sol
     x = sol.index(initial)
     newsol = sol[x+1:] + sol[:x]
@@ -78,7 +82,7 @@ def choose_option():
     5: Update number of cities \n \
     6: Update itinerary \n \
     7: Change initial city \n \
-    0: Quit\n-->  
+    0: Quit\n--> "
     x = int(raw_input(prompt))
     if x == 1:
         if x > 25:
@@ -86,81 +90,109 @@ def choose_option():
             run time on the scale of O(n-1!), so please choose a smaller value!"))
             update_cities(y)
             update_graph(y)
+        t1 = time.time()
         greedy_result = greedy(get_graph())
+        t2 = time.time()
+        total_time = round(t2 - t1,3)
 
-        # standardize output so that start_end is the same, sol = list of cities from 2 - #cities
+        # probably needs to be changed depending on how greedy is implemented
         greedy_sol = reorder_sol(greedy_result[0],get_start_end())
         greedy_sol.remove(greedy_sol[0])
         update_solution(greedy_sol)
         update_dist(greedy_result[1])
 
         print "The minimum total distance is ", greedy_result[1]
-#        print get_start_end(), get_solution()
+        print "Greedy algorithm took "+ str(total_time)+" seconds."
     elif x == 2:
         global sols
         sols = []
+        t1 = time.time()
         run_genetic()
-#        print get_start_end(), get_solution()
+        t2 = time.time()
+        total_time = round(t2 - t1,3)
+
+        print "Genetic algorithm took " + str(total_time) + " seconds."
     elif x == 3:
         if x > 25:
             y = int(raw_input("Remember that the Dynamic Programming solution takes space on the scale of O(n * 2^n) and \
                  run time on the scale of O(n^2 * 2^n), so please choose a smaller value!"))
             update_cities(y)
             update_graph(y)
+        t1 = time.time()
         dynamic_result = tsp_dynamic(get_graph())
+        t2 = time.time()
+        total_time = round(t2 - t1,3)
 
-        # standardize output (see greedy implementation)
+        # standardize output so that solution does not include starting city
         dyn_sol = dynamic_result[0]
-        dyn_sol.remove(dyn_sol[-1]) # since dynamic returns start, list of cities, start
+        dyn_sol.remove(dyn_sol[-1]) # since dynamic returns start, list of cities, start, we remove a duplicate start/end
         dyn_sol = reorder_sol(dyn_sol,get_start_end())
         update_solution(dyn_sol)
         update_dist(dynamic_result[1])
 
         print "The minimum total distance is ", dynamic_result[1]
-#        print get_start_end(), get_solution()
+        print "Dynamic algorithm took " + str(total_time) + " seconds."
     elif x == 4:
+        if get_dist() == None:
+            print "No algorithm has been run on this set of cities yet!"
+            choose_option()
         print_path()
     elif x == 5:
         y = int(raw_input("How many cities should be traveled to? This will randomize the cities again. \n--> "))
         update_cities(y)
         update_graph(y)
+        a = get_graph()
         locs = a.points
         start_end = locs[0]
         locs.remove(start_end)
+
         update_locs(locs)
         update_start_end(start_end)
+        update_solution([])
+        update_dist(None)
         assert(len(locs) == y - 1)
         assert(start_end not in locs)
     elif x == 6:
-        cities = int(raw_input("How many cities will you travel to? This includes the initial city.\n --> "))
+        c = int(raw_input("How many cities will you travel to? This includes the initial city.\n--> "))
+        while c < 2:
+            c = int(raw_input("Please enter a number greater than 1! "))
         locations = []
+
+        # get initial city
         x_init = int(raw_input("x-coordinate of initial city is: "))
         y_init = int(raw_input("y-coordinate of initial city is: "))
         city = (x_init,y_init)
-        for i in range(1,cities):
+
+        # get all the other cities
+        for i in range(1,c):
             number = str(i + 1)
             x = int(raw_input("x-coordinate of city #"+number+" is: "))
             y = int(raw_input("y-coordinate of city #"+number+" is: "))
             locations.append((x,y))
-        assert (len(locations) == cities-1)
+
+        # update like everything (wipe solutions clean)
+        assert (len(locations) == c-1)
         update_locs(locations)
         update_start_end(city)
-        update_cities(cities)
         update_solution([])
         update_dist(None)
         # need to update the graph somehow or change how dynamic and greedy take inputs
     elif x == 7:
+        if get_dist() == None:
+            print "No algorithm has been run on this set of cities yet!"
+            choose_option()
+
         sol = get_solution()
-        y = int(input("Which city out of the current solutions do you want to make the initial city? Enter its position in the current path.\n --> "))
+        y = int(input("Which city out of the current solutions do you want to make the initial city? Enter its position in the current path.\n--> "))
         while (y < 1 or y > len(sol) + 2):
             y = int(raw_input("Try again! "))
         if y == 1 or y == len(sol) + 2:
             choose_option()
         sol_ind = y-2
         city = sol[sol_ind]
-
         sol.append(get_start_end())
         newsol = reorder_sol(sol,city)
+
         update_solution(newsol)
         update_start_end(city)
     elif x == 0:
@@ -229,6 +261,7 @@ def main():
     print("Initializing...")
 
     global a, cities, locs, start_end, dist
+    dist = None
 
     prompt1 = "How many cities would you like to visit? "
     cities = int(raw_input(prompt1))
