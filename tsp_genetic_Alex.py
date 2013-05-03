@@ -29,7 +29,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
 
         return solution_lst
 
-    def solution_distance(sol, g, start_end):
+    def solution_len(sol, g, start_end):
         """ Given an order of cities, return total distance of tour from start city
             through our cities back to origin"""
         total_dist = g.distance(start_end, sol[0])
@@ -43,7 +43,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
 
     def fitness(sol, g, initial):
         """ Fitness of a solution is the inverse of its distance"""
-        return 1 /(solution_distance(sol, g, initial))
+        return 1 /(solution_len(sol, g, initial))
 
     def best_sol(solution_lst, g, initial):
         """ Returns position of the best solution in the solution_lst"""
@@ -55,16 +55,16 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
 
     def worst_sol(solution_lst, g, initial):
         # returns position in the array of the best solution in the array (solution_lst)
-        best = 0
+        worst = 0
         for i in range(len(solution_lst) - 1):
-            if solution_len(solution_lst[i], g, initial) > solution_len(solution_lst[best], g, initial):
-                best = i
-        return best
+            if solution_len(solution_lst[i], g, initial) > solution_len(solution_lst[worst], g, initial):
+                worst = i
+        return worst
 
-    def print_lengths(solution_lst):
+    def print_lengths(solution_lst, g, initial):
         #use for testing, mainly
         for i in solution_lst:
-            print (solution_len(i))
+            print (solution_len(i), g, initial)
         return
 
     def weighted_random (solution_lst, g, initial):
@@ -167,7 +167,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         x = choose_parents(solution_lst,a,initial)
         a = crossover_helper(x,cities)
         solution_lst.append(a)
-        return a
+        return solution_lst
 
     def mutation(solution_lst, g, initial):
         """ choose solution from solution_lst at random, preserve best solution
@@ -180,7 +180,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         r1 = random.randint(0, len(x) - 1)
         r2 = random.randint(0, len(x) - 1)
         solution_lst[x][r1], solution_lst[x][r2] = solution_lst[x][r2], solution_lst[x][r1]
-        return x
+        return solution_lst
 
     def mutation_hill(solution_lst, g, initial):
         """ choose solution from solution_lst at random, preserve best solution, remove
@@ -197,7 +197,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         r2 = random.randint(0, length - 1)
         
         solution_lst[wst][r1], solution_lst[wst][r2] = solution_lst[wst][r2], solution_lst[wst][r1]
-        return wst
+        return solution_lst
 
     def mutation_simulatedAnnealing(solution_lst, g, initial):
         """ choose solution from solution_lst at random, preserve best solution, remove
@@ -210,14 +210,14 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         
         # mutate the copy solution by swapping two cities at random
         length = len(x)
-        r1 = 
+        r1 = random.randint(0, length - 1)
         r2 = random.randint(0, length - 1)
         while r1 == r2:
             r1 = random.randint(0, length - 1)
             r2 = random.randint(0, length - 1)
         
         solution_lst[wst][r1], solution_lst[wst][r2] = solution_lst[wst][r2], solution_lst[wst][r1]
-        return wst
+        return solution_lst
         
 
     def factorial (n):
@@ -234,15 +234,22 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             return True
 
 
+
     if (cities < 2):
         sols.append(locs)
         return
     else:
+        sols = gen_population(cities, locs, sols)
+        x = len(sols)
+        best = best_sol(sols, g, start_end)
         for i in range(num):
             if max_num(sols, cities):
-                return
+                return (sols[best], solution_len(sols[best],g,start_end))
             else:
-                crossover(sols, g, start_end, cities)
-                mutation(sols, g, start_end)
-                mutation(sols, g, start_end)
-        return
+                sols = crossover(sols, g, start_end, cities)
+                sols = mutation(sols, g, start_end)
+#                sols = mutation_hill(sols, g, start_end)
+#                sols = mutation_simulatedAnnealing(sols, g, start_end)
+                assert len(sols) > x
+        assert len(sols) == x + num
+        return (sols[best], solution_len(sols[best],g,start_end))

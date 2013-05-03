@@ -22,7 +22,7 @@ def tsp_dynamic(G):
     vertices = G.graph.keys()
     start = vertices.pop()
     num_vertices = len(vertices)
-    print "Your start city is ", start
+#    print "Your start city is ", start
 
     
     

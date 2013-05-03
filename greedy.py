@@ -16,7 +16,7 @@ def greedy (G):
       
     # our start
     start = not_used.pop()
-    print "Your start city is ", start
+#    print "Your start city is ", start
     result.append(start)
     total_dist = 0
       
