@@ -2,7 +2,7 @@ from tsp_genetic_Alex import *
 from tsp_dynamic import *
 from greedy import *
 from PIL import Image, ImageDraw, ImageFont
-import time
+import time, os
 
 solution = []
 
@@ -268,6 +268,9 @@ def create_png():
 
     del draw
     im.save("tsp_map.png", "PNG")
+
+    os.system("tsp_map.png")
+    
     print ".png drawn!"
 
 # main body
