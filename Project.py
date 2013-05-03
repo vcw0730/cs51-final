@@ -110,9 +110,9 @@ def choose_option():
         t2 = time.time()
         total_time = round(t2 - t1,3)
 
-        greedy_sol = reorder_sol(0, greedy_result[0], get_start_end())
+        greedy_sol = greedy_result[0]
         greedy_sol.remove(greedy_sol[0])
-        print greedy_sol, get_start_end()
+        greedy_sol = reorder_sol(0, greedy_result[0], get_start_end())
         update_solution(0, greedy_sol)
         update_dist(0, greedy_result[1])
 
@@ -155,10 +155,10 @@ def choose_option():
         print "Dynamic algorithm took " + str(total_time) + " seconds."
     elif x == 4:
         y =int(raw_input("Which solution would you like to see? \n \
-                1: Greedy \n \
-                2: Genetic \n \
-                3: Dynamic \n \
-                --> "))
+        1: greedy \n \
+        2: genetic \n \
+        3: dynamic \n \
+        --> "))
         if (y < 1 or y > 3):
             print "Sorry, this algorithm doesn't exist!"
             choose_option()
@@ -276,11 +276,19 @@ def create_png(num):
     draw.ellipse((x-5, y-5, x+5, y+5), outline=(0,0,0), fill = (255,0,0))
 
     draw.text((10,10), "Distance: " + str(get_dist(num)), font=font, fill = (0,0,0))
+    if num == 0:
+        name = "greedy"
+    elif num == 1:
+        name = "genetic"
+    else:
+        name = "dynamic"
+    filename = "tsp_"+name+".png"
+    draw.text((10,20), "Algorithm used: " + name, font=font, fill = (0,0,0))
 
     del draw
-    im.save("tsp_map.png", "PNG")
+    im.save(filename, "PNG")
 
-    os.system("tsp_map.png")
+    os.system(filename)
     
     print ".png drawn!"
 
