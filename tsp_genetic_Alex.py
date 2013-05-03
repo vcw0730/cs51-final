@@ -243,7 +243,6 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         return
     else:
         sols = gen_population(cities, locs, sols)
-        print sols
         x = len(sols)
         best = best_sol(sols, g, start_end)
         for i in range(num):
