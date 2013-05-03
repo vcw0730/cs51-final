@@ -1,7 +1,7 @@
 from tsp_genetic import *
 from tsp_dynamic import *
 from greedy import *
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 import time
 
 solution = []
@@ -229,34 +229,55 @@ def print_path():
 
 def create_png():
     path = get_solution()
-    path.append(get_start_end())
+    city = get_start_end()
+    path.append(city)
     size = (500,500)
     padding = (50,50)
     im = Image.new("RGB",size,(255,255,255))
 
     draw = ImageDraw.Draw(im)
+    font = ImageFont.load_default()
 
     s = 4 #scale
     p = 50 #padding, shift map over to middle of image
+    tp = 15 + p #shift over text padding a bit to account for vertices later        
+    low_bound = 90
+    color = (255 - low_bound) / (len(path) - 1) # use to change colors
+
+
 
     #draw edges
     for i in range(len(path) - 1):
         c1 = path[i]
         c2 = path[i+1]
+
         draw.line((s*c1[0]+p,s*c1[1]+p,s*c2[0]+p,s*c2[1]+p), fill = (0,0,0))
-    c1 = path[0]
-    c2 = path[len(path)-1]
+        #label each city with coordinates
+        draw.text((s*c1[0]+tp,s*c1[1]+p),str(c1),font=font,fill = (0,0,i*color+low_bound))
+
+    c1 = path[len(path)-1] #this is the starting city due to the way append works
+    c2 = path[0]
     draw.line((s*c1[0]+p,s*c1[1]+p,s*c2[0]+p,s*c2[1]+p), fill = (0,0,0))
+    draw.text((s*c1[0]+tp,s*c1[1]+p),str(c1),font=font,fill = (255,0,0))
+
     
-    #draw vertices
-    for i in path:
-        x = s*i[0] + p
-        y = s*i[1] + p
-        draw.ellipse((x-5,y-5,x+5,y+5),outline=(0,0,0),fill = (255,255,255))
+    #draw vertices (that aren't the starting/ending)
+    path.remove(city)
+    for i in range(len(path)):
+        pos = path[i]
+        x = s*pos[0] + p
+        y = s*pos[1] + p
+        draw.ellipse((x-5,y-5,x+5,y+5),outline=(0,0,0),fill = ((0,0,(i*color+low_bound))))
+
+    #draw starting/ending city with RED
+    x = s*city[0] + p
+    y = s*city[1] + p
+    draw.ellipse((x-5,y-5,x+5,y+5),outline=(0,0,0),fill = (255,0,0))
+
+    draw.text((10,10), "Distance: " + str(get_dist()), font=font,fill = (0,0,0))
 
     del draw
     im.save("tsp_map.png", "PNG")
-    path.remove(get_start_end())
     print ".png drawn!"
 
 # main body
