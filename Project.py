@@ -105,7 +105,7 @@ def choose_option():
     elif x == 2:
         global sols
         sols = []
-        children = int(raw_input("How many rounds to run genetic? "))
+        children = int(raw_input("How many rounds to run genetic? Please enter a number less than 2^25 to account for hardware limitations. ",))
         print "Running... "
 
         t1 = time.time()

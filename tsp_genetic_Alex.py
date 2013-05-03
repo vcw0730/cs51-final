@@ -1,4 +1,4 @@
-import random
+import random, copy
 from graph_dictionary import *
 
 def tsp_genetic(num, sols, g, start_end, cities, locs):
@@ -10,7 +10,8 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         def create_population(n, template, solution_lst):
             """creates n identical solutions from the list of points given"""
             for i in range(n):
-                solution_lst.append(template)
+                x = copy.copy(template)
+                solution_lst.append(x)
             return solution_lst
 
         def shuffle_sol(sol):
@@ -21,13 +22,14 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             return sol
 
         # populate sols with n identical solutions
-        create_population(n, lst, solution_lst)
+        solution_lst = create_population(n, lst, solution_lst)
+        new_sol_lst = [None] * len(solution_lst)
 
         # shuffle each of the solutions
-        for i in range(len(solution_lst) - 1):
-            solution_lst[i] = shuffle_sol(solution_lst[i])
+        for i in range(len(solution_lst)):
+            new_sol_lst[i] = shuffle_sol(solution_lst[i])
 
-        return solution_lst
+        return new_sol_lst
 
     def solution_len(sol, g, start_end):
         """ Given an order of cities, return total distance of tour from start city
@@ -35,7 +37,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         total_dist = g.distance(start_end, sol[0])
         length = len(sol)
         # distance between each city in solution
-        for i in (range(length - 2)):
+        for i in (range(length - 1)):
             total_dist += g.distance(sol[i], sol[i + 1])
         # add distance between end of solution and initial city
         total_dist += g.distance(sol[length - 1], start_end)
@@ -174,12 +176,13 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             should not change size of solution_lst
             elitism - i.e. don't mutate the solution with shortest path """
         x = 0
-        while (x == best_sol(solution_lst, g, initial)):
+        while (solution_lst[x] == best_sol(solution_lst, g, initial)):
             x = random.randint(0, len(parentsol) - 1)
         # mutate solution by swapping two cities at random
-        r1 = random.randint(0, len(x) - 1)
-        r2 = random.randint(0, len(x) - 1)
-        solution_lst[x][r1], solution_lst[x][r2] = solution_lst[x][r2], solution_lst[x][r1]
+        sol = solution_lst[x]
+        r1 = random.randint(0, len(sol) - 1)
+        r2 = random.randint(0, len(sol) - 1)
+        sol[r1], sol[r2] = sol[r2], sol[r1]
         return solution_lst
 
     def mutation_hill(solution_lst, g, initial):
@@ -240,10 +243,11 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         return
     else:
         sols = gen_population(cities, locs, sols)
+        print sols
         x = len(sols)
         best = best_sol(sols, g, start_end)
         for i in range(num):
-            if max_num(sols, cities):
+            if not(max_num(sols, cities)):
                 return (sols[best], solution_len(sols[best],g,start_end))
             else:
                 sols = crossover(sols, g, start_end, cities)
@@ -251,5 +255,6 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
 #                sols = mutation_hill(sols, g, start_end)
 #                sols = mutation_simulatedAnnealing(sols, g, start_end)
                 assert len(sols) > x
+        best = best_sol(sols, g, start_end)
         assert len(sols) == x + num
         return (sols[best], solution_len(sols[best],g,start_end))
