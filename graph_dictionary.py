@@ -33,8 +33,13 @@ class Graph(object):
       a = self.generate_point(lst)
       lst.append(a)
     return lst
+
+  def update_points(self, lst):
+    self.points = lst
+    self.graph = self.generate_complete_graph()
+    return lst
  
-  # udpates the edges in the dictionary
+  # updates the edges in the dictionary
   def update_edge(self, point1, point2):
     dist = self.distance(point1, point2)
     self.graph[point1].update({point2: dist})

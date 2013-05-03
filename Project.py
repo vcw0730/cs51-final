@@ -177,6 +177,9 @@ def choose_option():
         update_solution([])
         update_dist(None)
         # need to update the graph somehow or change how dynamic and greedy take inputs
+        a = get_graph()
+        points = locations + [city]
+        a.update_points(points)
     elif x == 7:
         if get_dist() == None:
             print "No algorithm has been run on this set of cities yet!"
