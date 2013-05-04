@@ -212,15 +212,18 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         solution_lst[wst][r1], solution_lst[wst][r2] = solution_lst[wst][r2], solution_lst[wst][r1]
         return solution_lst
 
-    def crossover(solution_lst,a,initial,cities):
+    def crossover(solution_lst, g, initial, cities):
         """ using helper functions, choose two parent solutions and crossover
             add child solution to solution_lst, increases size by one
             note - will add repeats"""
-        x = choose_parents(solution_lst,a,initial)
-#        a = crossover_greedy(x,cities)
-        a = crossover_OX(x,cities)
-        solution_lst.append(a)
-        return solution_lst
+        new_sol_lst = []
+        new_sol_lst.append(solution_lst[best_sol(solution_lst, g, initial)])
+        for i in range(cities - 1):
+            x = choose_parents(solution_lst, g, initial)
+#            a = crossover_greedy(x,cities)
+            a = crossover_OX(x, cities)
+            new_sol_lst.append(a)
+        return new_sol_lst
         
 
     def factorial (n):
@@ -240,23 +243,22 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
     gen_file = open('genetic.txt','a')
 
     if (cities < 3):
-        return (locs, solution_len(locs,g,start_end))
+        return (locs, solution_len(locs, g, start_end))
     else:
         t1 = time.time()
         sols = gen_population(cities, locs, sols)
-        x = len(sols)
         best = best_sol(sols, g, start_end)
         for i in range(num):
             if not(max_num(sols, cities)):
-                return (sols[best], solution_len(sols[best],g,start_end))
+                return (sols[best], solution_len(sols[best], g,start_end))
             else:
                 sols = crossover(sols, g, start_end, cities) # to change which crossover is used, go to def crossover itself
-                sols = mutation_random(sols, g, start_end)
-#                sols = mutation_hill(sols, g, start_end)
-#                sols = mutation_simulatedAnnealing(sols, g, start_end)
-                assert len(sols) > x
+                r = random.randint(0,10)
+                if r == 0:
+                    sols = mutation_random(sols, g, start_end)
+    #                sols = mutation_hill(sols, g, start_end)
+    #                sols = mutation_simulatedAnnealing(sols, g, start_end)
         best = best_sol(sols, g, start_end)
-        assert len(sols) == x + num
         t2 = time.time()
         total_time = round(t2 - t1,3)
 

@@ -158,3 +158,5 @@ Time: 4.232. Genetic, OX crossover, 15 cities, 200 generations.
 Time: 86.188. Genetic, OX crossover, 15 cities, 1000 generations. 
 Time: 70.289. Genetic, OX crossover, 15 cities, 1000 generations. 
 Time: 47.742. Genetic, OX crossover, 10 cities, 1000 generations. 
+Time: 0.783. Genetic, OX crossover, 10 cities, 100 generations. 
+Time: 10.137. Genetic, OX crossover, 10 cities, 1000 generations. 
