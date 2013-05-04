@@ -2,7 +2,7 @@ from tsp_genetic import *
 from tsp_dynamic import *
 from greedy import *
 from PIL import Image, ImageDraw, ImageFont
-import time, os
+import time, os, ast
 
 solution = ([],[],[])
 #solution[0] = greedy, solution[1] = genetic, solution[2] = dynamic
@@ -18,6 +18,11 @@ def update_solution(num, newsol):
     else:
         print "Error: num is not in range!"
     return
+
+def clear_solution():
+    for i in range(3):
+        update_solution(i, [])
+        update_dist(i, None)
 
 def update_cities(n):
     global cities
@@ -131,7 +136,7 @@ def choose_option():
         update_solution(0, greedy_sol)
         update_dist(0, greedy_result[1])
 
-#        e_file.write("Greedy, time: "+str(total_time)+" for "+str(get_cities())+" cities \n")
+        e_file.write("Greedy, time: "+str(total_time)+" for "+str(get_cities())+" cities \n")
 
         print "The minimum total distance is ", greedy_result[1]
         print "Greedy algorithm took "+ str(total_time)+" seconds."
@@ -146,7 +151,7 @@ def choose_option():
         t2 = time.time()
         total_time = round(t2 - t1,3)
 
-#        e_file.write("Genetic time: "+str(total_time)+" for "+str(get_cities())+" cities, "+str(children)+" crossovers \n")
+        e_file.write("Genetic time: "+str(total_time)+" for "+str(get_cities())+" cities, "+str(children)+" crossovers \n")
 
         update_solution(1, gen_result[0])
         update_dist(1, gen_result[1])                        
@@ -161,7 +166,7 @@ def choose_option():
         t2 = time.time()
         total_time = round(t2 - t1,3)
 
-#        e_file.write("Dynamic, time: "+str(total_time)+" for "+str(get_cities())+" cities \n")
+        e_file.write("Dynamic, time: "+str(total_time)+" for "+str(get_cities())+" cities \n")
 
         # standardize output so that solution does not include starting city
         dyn_sol = dynamic_result[0]
@@ -186,37 +191,52 @@ def choose_option():
         y = int(raw_input("How many cities should be traveled to? This will randomize the cities again. \n--> "))
         change_graph(y)
     elif x == 6:
-        c = int(raw_input("How many cities will you travel to? This includes the initial city.\n--> "))
-        while c < 2:
-            c = int(raw_input("Please enter a number greater than 1! "))
-        locations = []
+        y = int(raw_input(" 1: Load coordinates from cities.txt \n 2: Enter coordinates \n --> "))
+        if y == 1:
+            f = open('cities.txt','r')
+            cities = f.read().splitlines()
+            cities = filter(lambda x: x != "", cities)
+            for i in range(len(cities)):
+                cities[i] = ast.literal_eval(cities[i])
+            update_cities(len(cities))
+            update_start_end(cities[0])
+            a = get_graph()
+            a.update_points(cities)
+            cities.remove(cities[0])
+            update_locs(cities)
+            clear_solution()
+            f.close()
+        elif y == 2:
+            c = int(raw_input("How many cities will you travel to? This includes the initial city.\n--> "))
+            while c < 2:
+                c = int(raw_input("Please enter a number greater than 1! "))
+            locations = []
 
-        # get initial city
-        x_init = int(raw_input("x-coordinate of initial city is: "))
-        y_init = int(raw_input("y-coordinate of initial city is: "))
-        city = (x_init,y_init)
+            # get initial city
+            x_init = int(raw_input("x-coordinate of initial city is: "))
+            y_init = int(raw_input("y-coordinate of initial city is: "))
+            city = (x_init,y_init)
 
-        # get all the other cities
-        for i in range(1,c):
-            number = str(i + 1)
-            x = int(raw_input("x-coordinate of city #"+number+" is: "))
-            y = int(raw_input("y-coordinate of city #"+number+" is: "))
-            locations.append((x,y))
+            # get all the other cities
+            for i in range(1,c):
+                number = str(i + 1)
+                x = int(raw_input("x-coordinate of city #"+number+" is: "))
+                y = int(raw_input("y-coordinate of city #"+number+" is: "))
+                locations.append((x,y))
 
-        # update like everything (wipe solutions clean)
-        assert (len(locations) == c-1)
-        update_locs(locations)
-        update_start_end(city)
-        update_cities(c)
-        for i in range(3):
-            update_solution(i, [])
-            update_dist(i, None)
-        # need to update the graph somehow or change how dynamic and greedy take inputs
-        a = get_graph()
-        points = locations + [city]
-        a.update_points(points)
+            # update like everything (wipe solutions clean)
+            assert (len(locations) == c-1)
+            update_locs(locations)
+            update_start_end(city)
+            update_cities(c)
+            clear_solution()
+            a = get_graph()
+            points = locations + [city]
+            a.update_points(points)
+        else:
+            choose_option()
     elif x == 0:
-#        e_file.close()
+        e_file.close()
         return
 
     choose_option()
@@ -300,9 +320,9 @@ def main():
     print("Initializing...")
 
     global a, cities, locs, start_end, dist
-#    global e_file
+    global e_file
     dist = (None, None, None)
-#    e_file = open('efficiency.txt','a')
+    e_file = open('efficiency.txt','a')
 
     print("When asked for input, please only enter in integer values!")
 

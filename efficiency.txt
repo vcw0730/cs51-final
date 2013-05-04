@@ -179,3 +179,29 @@ Genetic time: 2.437 for 20 cities, 100 crossovers
 Genetic time: 8.348 for 20 cities, 200 crossovers 
 Genetic time: 46.592 for 20 cities, 500 crossovers 
 Genetic time: 178.358 for 20 cities, 1000 crossovers 
+Greedy, time: 0.0 for 2 cities 
+Greedy, time: 0.0 for 3 cities 
+Greedy, time: 0.001 for 4 cities 
+Greedy, time: 0.0 for 5 cities 
+Greedy, time: 0.001 for 6 cities 
+Greedy, time: 0.0 for 7 cities 
+Greedy, time: 0.0 for 8 cities 
+Greedy, time: 0.0 for 9 cities 
+Greedy, time: 0.0 for 10 cities 
+Greedy, time: 0.0 for 15 cities 
+Greedy, time: 0.0 for 20 cities 
+Greedy, time: 0.0 for 25 cities 
+Greedy, time: 0.0 for 2 cities 
+Greedy, time: 0.0 for 2 cities 
+Dynamic, time: 0.0 for 2 cities 
+Genetic time: 0.002 for 2 cities, 10 crossovers 
+Greedy, time: 0.0 for 2 cities 
+Dynamic, time: 0.0 for 2 cities 
+Genetic time: 0.002 for 2 cities, 5 crossovers 
+Dynamic, time: 0.0 for 3 cities 
+Greedy, time: 0.0 for 3 cities 
+Greedy, time: 0.0 for 10 cities 
+Dynamic, time: 0.036 for 10 cities 
+Genetic time: 4.592 for 10 cities, 300 crossovers 
+Greedy, time: 0.0 for 3 cities 
+Dynamic, time: 0.0 for 3 cities 

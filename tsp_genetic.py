@@ -104,7 +104,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             r = random.randint(0, len(parentsol)-1)
         return parentsol[r]
 
-    def crossover_helper(parents, cities):
+    def crossover_OX(parents, cities):
         """ implements order crossover (OX) algorithm randomly picks an swath of "genes" in one parent and puts that in same location in child
             rest of child is comprised of other parent's genes
 
@@ -130,7 +130,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         
         return child
 
-
+    def crossover_greedy(parents, cities):
         # given tuple of parents generated from choose_parents, crossover
         # choose first city of either parent at random
         # add consecutive cities by finding the city after it in either parent
@@ -139,14 +139,13 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         # if neither has appeared, pick either
         # Issues: child solution doesn't have characteristics of parent
        
-        """
         x = random.choice(parents)
         x = x[0]
         child = []
         child.append(x)
         while (len(child) < len(parents[1])):
-            next1 = parents[0][(parents[0].index(x) + 1) % cities]
-            next2 = parents[1][(parents[1].index(x) + 1) % cities]
+            next1 = parents[0][(parents[0].index(x) + 1) % (cities - 1)]
+            next2 = parents[1][(parents[1].index(x) + 1) % (cities - 1)]
             if next1 in child:
                 if next2 in child:
                     r = random.randint(0,1)
@@ -161,18 +160,8 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
                 child.append(next1)
                 x = next1
         return child
-        """
 
-    def crossover(solution_lst,a,initial,cities):
-        """ using helper functions, choose two parent solutions and crossover
-            add child solution to solution_lst, increases size by one
-            note - will add repeats"""
-        x = choose_parents(solution_lst,a,initial)
-        a = crossover_helper(x,cities)
-        solution_lst.append(a)
-        return solution_lst
-
-    def mutation(solution_lst, g, initial):
+    def mutation_random(solution_lst, g, initial):
         """ choose solution from solution_lst at random, preserve best solution
             should not change size of solution_lst
             elitism - i.e. don't mutate the solution with shortest path """
@@ -222,6 +211,16 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         
         solution_lst[wst][r1], solution_lst[wst][r2] = solution_lst[wst][r2], solution_lst[wst][r1]
         return solution_lst
+
+    def crossover(solution_lst,a,initial,cities):
+        """ using helper functions, choose two parent solutions and crossover
+            add child solution to solution_lst, increases size by one
+            note - will add repeats"""
+        x = choose_parents(solution_lst,a,initial)
+#        a = crossover_greedy(x,cities)
+        a = crossover_OX(x,cities)
+        solution_lst.append(a)
+        return solution_lst
         
 
     def factorial (n):
@@ -237,12 +236,11 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         else:
             return True
 
-#    global gen_file
-#    gen_file = open('genetic.txt','a')
+    global gen_file
+    gen_file = open('genetic.txt','a')
 
-    if (cities < 2):
-        sols.append(locs)
-        return
+    if (cities < 3):
+        return (locs, solution_len(locs,g,start_end))
     else:
         t1 = time.time()
         sols = gen_population(cities, locs, sols)
@@ -252,8 +250,8 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             if not(max_num(sols, cities)):
                 return (sols[best], solution_len(sols[best],g,start_end))
             else:
-                sols = crossover(sols, g, start_end, cities)
-                sols = mutation(sols, g, start_end)
+                sols = crossover(sols, g, start_end, cities) # to change which crossover is used, go to def crossover itself
+                sols = mutation_random(sols, g, start_end)
 #                sols = mutation_hill(sols, g, start_end)
 #                sols = mutation_simulatedAnnealing(sols, g, start_end)
                 assert len(sols) > x
@@ -261,6 +259,15 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         assert len(sols) == x + num
         t2 = time.time()
         total_time = round(t2 - t1,3)
+
+        # change which one is active depending on which mutation/crossover is run
+#        gen_file.write("Time: " + str(total_time) + ". Genetic, random mutation, " + str(cities) + " cities, " + str(num) + " generations. \n")
+#        gen_file.write("Time: " + str(total_time) + ". Genetic, hill mutation, " + str(cities) + " cities, " + str(num) + " generations. \n")
 #        gen_file.write("Time: " + str(total_time) + ". Genetic, SA mutation, " + str(cities) + " cities, " + str(num) + " generations. \n")
-#        gen_file.close()
+
+
+        gen_file.write("Time: " + str(total_time) + ". Genetic, OX crossover, " + str(cities) + " cities, " + str(num) + " generations. \n")
+#        gen_file.write("Time: " + str(total_time) + ". Genetic, greedy crossover, " + str(cities) + " cities, " + str(num) + " generations. \n")
+
+        gen_file.close()
         return (sols[best], solution_len(sols[best],g,start_end))
