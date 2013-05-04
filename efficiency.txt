@@ -205,3 +205,7 @@ Dynamic, time: 0.036 for 10 cities
 Genetic time: 4.592 for 10 cities, 300 crossovers 
 Greedy, time: 0.0 for 3 cities 
 Dynamic, time: 0.0 for 3 cities 
+Dynamic, time: 0.003 for 7 cities 
+Dynamic, time: 0.003 for 7 cities 
+Greedy, time: 0.0 for 25 cities 
+Greedy, time: 0.0 for 25 cities 
