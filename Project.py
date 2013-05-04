@@ -1,4 +1,4 @@
-from tsp_genetic_Alex import *
+from tsp_genetic import *
 from tsp_dynamic import *
 from greedy import *
 from PIL import Image, ImageDraw, ImageFont
@@ -116,6 +116,8 @@ def choose_option():
         update_solution(0, greedy_sol)
         update_dist(0, greedy_result[1])
 
+        e_file.write("Greedy, time: "+str(total_time)+" for "+str(get_cities())+" cities \n")
+
         print "The minimum total distance is ", greedy_result[1]
         print "Greedy algorithm took "+ str(total_time)+" seconds."
     elif x == 2:
@@ -128,6 +130,8 @@ def choose_option():
         gen_result = tsp_genetic(children, sols, get_graph(), get_start_end(), get_cities(), get_locs())
         t2 = time.time()
         total_time = round(t2 - t1,3)
+
+        e_file.write("Genetic time: "+str(total_time)+" for "+str(get_cities())+" cities, "+str(children)+" crossovers \n")
 
         update_solution(1, gen_result[0])
         update_dist(1, gen_result[1])                        
@@ -143,6 +147,8 @@ def choose_option():
         dynamic_result = tsp_dynamic(get_graph())
         t2 = time.time()
         total_time = round(t2 - t1,3)
+
+        e_file.write("Dynamic, time: "+str(total_time)+" for "+str(get_cities())+" cities \n")
 
         # standardize output so that solution does not include starting city
         dyn_sol = dynamic_result[0]
@@ -205,7 +211,8 @@ def choose_option():
         assert (len(locations) == c-1)
         update_locs(locations)
         update_start_end(city)
-        for i in range(r):
+        update_cities(c)
+        for i in range(3):
             update_solution(i, [])
             update_dist(i, None)
         # need to update the graph somehow or change how dynamic and greedy take inputs
@@ -213,6 +220,7 @@ def choose_option():
         points = locations + [city]
         a.update_points(points)
     elif x == 0:
+        e_file.close()
         return
 
     choose_option()
@@ -221,7 +229,6 @@ def choose_option():
 def print_path(num):
     assert (num < 3 and num > -1)
     sol = get_solution(num)
-    sol = sol[num]
     create_png(num)
     print "Current path for traveling between these",get_cities(),"cities is: "
     print " 1 ) ",get_start_end()
@@ -297,7 +304,10 @@ def main():
     print("Initializing...")
 
     global a, cities, locs, start_end, dist
+    global e_file
     dist = (None, None, None)
+    e_file = open('efficiency.txt','a')
+
 
     prompt1 = "How many cities would you like to visit? "
     cities = int(raw_input(prompt1))

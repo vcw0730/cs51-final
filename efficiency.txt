@@ -1,0 +1,69 @@
+CS51 Final Project: Traveling Salesman Runtime/Efficiency Analysis
+
+Greedy, time: 0.001 for 10 cities 
+Greedy, time: 0.0 for 20 cities 
+Greedy, time: 0.0 for 30 cities 
+Greedy, time: 0.0 for 40 cities 
+Greedy, time: 0.001 for 50 cities 
+Greedy, time: 0.001 for 60 cities 
+Greedy, time: 0.001 for 70 cities 
+Greedy, time: 0.001 for 80 cities 
+Greedy, time: 0.001 for 90 cities 
+Greedy, time: 0.001 for 100 cities 
+Dynamic, time: 0.0 for 5 cities 
+Dynamic, time: 0.038 for 10 cities 
+Dynamic, time: 4.17 for 15 cities 
+Dynamic, time: 9.873 for 16 cities 
+Dynamic, time: 22.199 for 17 cities 
+Dynamic, time: 51.105 for 18 cities 
+Dynamic, time: 118.668 for 19 cities 
+Dynamic, time: 274.015 for 20 cities 
+Genetic time: 0.009 for 5 cities, 10 crossovers 
+Genetic time: 0.027 for 5 cities, 25 crossovers 
+Genetic time: 0.092 for 5 cities, 50 crossovers 
+Genetic time: 0.297 for 5 cities, 100 crossovers 
+Genetic time: 1.225 for 5 cities, 200 crossovers 
+Genetic time: 2.624 for 5 cities, 300 crossovers 
+Genetic time: 7.222 for 5 cities, 500 crossovers 
+Genetic time: 0.015 for 10 cities, 10 crossovers 
+Genetic time: 0.056 for 10 cities, 25 crossovers 
+Genetic time: 0.182 for 10 cities, 50 crossovers 
+Genetic time: 0.602 for 10 cities, 100 crossovers 
+Genetic time: 2.199 for 10 cities, 200 crossovers 
+Genetic time: 4.681 for 10 cities, 300 crossovers 
+Genetic time: 12.581 for 10 cities, 500 crossovers 
+Genetic time: 49.675 for 10 cities, 1000 crossovers 
+Genetic time: 207.352 for 10 cities, 2000 crossovers 
+Genetic time: 1253.199 for 10 cities, 5000 crossovers 
+Genetic time: 0.061 for 20 cities, 10 crossovers 
+Genetic time: 0.158 for 20 cities, 25 crossovers 
+Genetic time: 0.433 for 20 cities, 50 crossovers 
+Genetic time: 1.309 for 20 cities, 100 crossovers 
+Genetic time: 4.422 for 20 cities, 200 crossovers 
+Genetic time: 24.476 for 20 cities, 500 crossovers 
+Genetic time: 94.733 for 20 cities, 1000 crossovers 
+Genetic time: 368.119 for 20 cities, 2000 crossovers 
+Genetic time: 0.067 for 20 cities, 10 crossovers 
+Genetic time: 0.208 for 20 cities, 25 crossovers 
+Genetic time: 0.576 for 20 cities, 50 crossovers 
+Genetic time: 1.656 for 20 cities, 100 crossovers 
+Genetic time: 5.853 for 20 cities, 200 crossovers 
+Genetic time: 32.771 for 20 cities, 500 crossovers 
+Genetic time: 98.536 for 20 cities, 1000 crossovers 
+Genetic time: 385.025 for 20 cities, 2000 crossovers 
+Genetic time: 0.131 for 30 cities, 10 crossovers 
+Genetic time: 0.398 for 30 cities, 25 crossovers 
+Genetic time: 1.007 for 30 cities, 50 crossovers 
+Genetic time: 2.908 for 30 cities, 100 crossovers 
+Genetic time: 9.413 for 30 cities, 200 crossovers 
+Genetic time: 50.264 for 30 cities, 500 crossovers 
+Genetic time: 190.814 for 30 cities, 1000 crossovers 
+Genetic time: 737.552 for 30 cities, 2000 crossovers 
+Genetic time: 0.228 for 40 cities, 10 crossovers 
+Genetic time: 0.673 for 40 cities, 25 crossovers 
+Genetic time: 1.583 for 40 cities, 50 crossovers 
+Genetic time: 4.37 for 40 cities, 100 crossovers 
+Genetic time: 13.288 for 40 cities, 200 crossovers 
+Genetic time: 69.385 for 40 cities, 500 crossovers 
+Genetic time: 255.578 for 40 cities, 1000 crossovers 
+Genetic time: 995.501 for 40 cities, 2000 crossovers 
