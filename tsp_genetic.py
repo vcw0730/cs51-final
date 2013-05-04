@@ -1,5 +1,6 @@
 import random, copy
 from graph_dictionary import *
+import time
 
 def tsp_genetic(num, sols, g, start_end, cities, locs):
 
@@ -188,14 +189,14 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
     def mutation_hill(solution_lst, g, initial):
         """ choose solution from solution_lst at random, preserve best solution, remove
             the worst solution and replace it with a mutation of the best """
-        bst = best_sol(solution_lst, a, initial)
-        wst = worst_sol(solution_lst, a, initial)
+        bst = best_sol(solution_lst, g, initial)
+        wst = worst_sol(solution_lst, g, initial)
         
         # replace the worst solution with the best
         solution_lst[wst] = solution_lst[bst]
         
         # mutate the copy solution by swapping two cities at random
-        length = len(x)
+        length = len(solution_lst[wst])
         r1 = random.randint(0, length - 1)
         r2 = random.randint(0, length - 1)
         
@@ -205,14 +206,14 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
     def mutation_simulatedAnnealing(solution_lst, g, initial):
         """ choose solution from solution_lst at random, preserve best solution, remove
             the worst solution and replace it with a mutation of the best """
-        bst = best_sol(solution_lst, a, initial)
-        wst = worst_sol(solution_lst, a, initial)
+        bst = best_sol(solution_lst, g, initial)
+        wst = worst_sol(solution_lst, g, initial)
         
         # replace the worst solution with the best
         solution_lst[wst] = solution_lst[bst]
         
         # mutate the copy solution by swapping two cities at random
-        length = len(x)
+        length = len(solution_lst[wst])
         r1 = random.randint(0, length - 1)
         r2 = random.randint(0, length - 1)
         while r1 == r2:
@@ -236,12 +237,14 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         else:
             return True
 
-
+#    global gen_file
+#    gen_file = open('genetic.txt','a')
 
     if (cities < 2):
         sols.append(locs)
         return
     else:
+        t1 = time.time()
         sols = gen_population(cities, locs, sols)
         x = len(sols)
         best = best_sol(sols, g, start_end)
@@ -256,4 +259,8 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
                 assert len(sols) > x
         best = best_sol(sols, g, start_end)
         assert len(sols) == x + num
+        t2 = time.time()
+        total_time = round(t2 - t1,3)
+#        gen_file.write("Time: " + str(total_time) + ". Genetic, SA mutation, " + str(cities) + " cities, " + str(num) + " generations. \n")
+#        gen_file.close()
         return (sols[best], solution_len(sols[best],g,start_end))
