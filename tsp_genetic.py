@@ -133,6 +133,19 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
     def crossover_PMX(parents,cities):
         pass
 
+    def apply_hillclimb(solution, start_end, iterations):
+        best = solution
+        best_distance = solution_len(solution, g, start_end)
+        while (iterations > 0):
+            r1 = random.randint(0, len(solution) - 1)
+            r2 = random.randint(0, len(solution) - 1)
+            solution[r1], solution[r2] = solution[r2], solution[r1]
+            distance = solution_len(solution, g, start_end)
+            if distance < best_distance:
+                best = solution
+                best_distance = distance
+        return solution
+        
     def crossover_greedy(parents, cities):
         # given tuple of parents generated from choose_parents, crossover
         # choose first city of either parent at random
@@ -251,6 +264,9 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
                 newsols = mutation_random(newsols, g, start_end)
 #                newsols = mutation_hill(newsols, g, start_end)
 #                newsols = mutation_simulatedAnnealing(newsols, g, start_end)
+            for each in range(newsols):
+                newsols[each] = apply_hillclimb(newsols[each], start_end, iterations)
+                
         best = best_sol(newsols, g, start_end)
         t2 = time.time()
         total_time = round(t2 - t1,3)
