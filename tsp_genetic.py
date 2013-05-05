@@ -114,8 +114,8 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
 
             produces 1 child at a time for any 2 given parents
         """
-        swath_start = random.randint(1, cities - 2)
-        swath_end = random.randint(swath_start + 1, cities - 1)
+        swath_start = random.randint(0, cities - 3)
+        swath_end = random.randint(swath_start + 1, cities - 2)
         # take first parent in tuple as "donor" parent, doesn't matter since "first" was arbitrarily assigned
         donor = parents[0]
         nondonor = parents[1]
@@ -131,6 +131,13 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         return child
 
     def crossover_PMX(parents,cities):
+        swath_start = random.randint(0, cities - 3)
+        swath_end = random.randint(swath_start + 1, cities - 2)
+        donor = parents[0]
+        nondonor = parents[1]
+        swath1 = donor[swath_start:swath_end]
+        swath2 = nondonor[swath_start:swath_end]
+        
         pass
 
     def apply_hillclimb(solution, start_end, iterations):
