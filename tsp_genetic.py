@@ -91,7 +91,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             returns tuple"""
         p1 = None
         p2 = None
-        while p1 == p2:
+        while p1 is p2:
             p1 = weighted_random(solution_lst, g, initial)
             p2 = weighted_random(solution_lst, g, initial)
         return (p1, p2)
@@ -216,29 +216,21 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         """ using helper functions, choose two parent solutions and crossover
             add child solution to solution_lst, increases size by one
             note - will add repeats"""
-        new_sol_lst = []
-        new_sol_lst.append(solution_lst[best_sol(solution_lst, g, initial)])
-        for i in range(cities - 1):
-            x = choose_parents(solution_lst, g, initial)
-#            a = crossover_greedy(x,cities)
-            a = crossover_OX(x, cities)
-            new_sol_lst.append(a)
-        return new_sol_lst
-        
-    """
-    def factorial (n):
-        if n < 2:
-            return 0
-        else:
-            return n * factorial(n-1)
+        child_pop = []
+        child_pop.append(solution_lst[best_sol(solution_lst, g, initial)])
 
-    def max_num(sols, cities):
-        limit = factorial(cities)
-        if (len(sols) < limit):
-            return False
-        else:
-            return True
-    """
+        # so that child population has the same number of solutions as the parent population
+        for i in range(len(solution_lst) - 1):
+            x = choose_parents(solution_lst, g, initial)
+            a = crossover_OX(x, cities)
+#            while a in child_pop:
+#                x = choose_parents(solution_lst, g, initial)
+#                a = crossover_greedy(x,cities)
+#                a = crossover_OX(x, cities)
+#                print "stalling ..."
+            child_pop.append(a)
+        return child_pop
+        
 
     global gen_file
     gen_file = open('genetic.txt','a')
