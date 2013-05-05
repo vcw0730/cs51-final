@@ -105,30 +105,33 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         return parentsol[r]
 
     def crossover_OX(parents, cities):
-        """ implements order crossover (OX) algorithm randomly picks an swath of "genes" in one parent and puts that in same location in child
-            rest of child is comprised of other parent's genes
+        """ implements order crossover (OX) algorithm: randomly picks an swath of "genes"
+            in one parent and puts that in same location in child, rest of child is
+            comprised of other parent's genes, starting from end of swath and looping back around
+            
+            start, end represent indices in list, so go from 0 to length-1
+            cities-2 as upper bound for start and start+1 as lower for end ensure swath is at least 1 long
 
-            start, end represent absolute positions in list not indices
-            cities-2 as upper bound for start and start+1 as lower for end ensure swath is at least 1 long  """
+            produces 1 child at a time for any 2 given parents
+        """
         swath_start = random.randint(1, cities - 2)
         swath_end = random.randint(swath_start + 1, cities - 1)
         # take first parent in tuple as "donor" parent, doesn't matter since "first" was arbitrarily assigned
         donor = parents[0]
         nondonor = parents[1]
-        swath = donor[swath_start - 1:swath_end]
-        filtered = filter(lambda x: x not in swath, nondonor)
-
-        child = filtered[:swath_start-1] + swath + filtered[swath_start - 1:]
-        '''
-        latter_length = len(donor) - swath_end
+        swath = donor[swath_start:swath_end]
+        
+        rest_length = len(donor) - swath_end
         # reorder to make it easier to concat afterwards
         reordered = nondonor[swath_end:] + nondonor[:swath_end]
         filtered = filter(lambda x: x not in swath, reordered)
 
-        child = filtered[-swath_start:] + swath + filtered[:latter_length]
-        '''
+        child = filtered[-swath_start:] + swath + filtered[:rest_length]
         
         return child
+
+    def crossover_PMX(parents,cities):
+        pass
 
     def crossover_greedy(parents, cities):
         # given tuple of parents generated from choose_parents, crossover
