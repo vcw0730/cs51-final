@@ -71,7 +71,10 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         return
 
     def weighted_random (solution_lst, g, initial):
-        """ choose a solution with probability equal to the inverse of its distance (?)
+        """ assigns segment of sum proportional to fitness for each individual,
+            the better the fitness the larger the segment of the sum that
+            corresponds to it and thus the more likely it is to be chosen at random
+    
             use in choose_parents to select "fit" parents"""
         sum = 0
         for i in solution_lst:
@@ -87,7 +90,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         return # shouldn't get down to here because of how random and r are defined
 
     def choose_parents(solution_lst, g, initial):
-        """ choose parents from solution list with probability based on their fitness
+        """ choose parents from solution list with probability based on fitness
             returns tuple"""
         p1 = None
         p2 = None
@@ -105,15 +108,17 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         return parentsol[r]
 
     def crossover_OX(parents, cities):
-        """ implements order crossover (OX) algorithm: randomly picks an swath of "genes"
-            in one parent and puts that in same location in child, rest of child is
-            comprised of other parent's genes, starting from end of swath and looping back around
+        """ implements order crossover (OX) algorithm:
+            randomly picks an swath of "alleles" in one parent and puts that
+            in same location in child, rest of child is comprised of other parent's
+            alleles, starting from end of swath and looping back around
             
             start, end represent indices in list, so go from 0 to length-1
-            cities-2 as upper bound for start and start+1 as lower for end ensure swath is at least 1 long
+            cities-2 as upper bound for start and start+1 as lower for end ensure
+            swath is at least 1 long
 
-            produces 1 child at a time for any 2 given parents
-        """
+            produces 1 child at a time for any 2 given parents """
+        
         swath_start = random.randint(0, cities - 3)
         swath_end = random.randint(swath_start + 1, cities - 2)
         # take first parent in tuple as "donor" parent, doesn't matter since "first" was arbitrarily assigned
@@ -132,14 +137,36 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         return child
 
     def crossover_PMX(parents,cities):
+        """ partially matched crossover algorithm:
+            splice in random swath from donor parent into child, add in non-conflicting
+            alleles from nondonor in same absolute positions, then use procedure to
+            fill remaining positions in child with conflict """
+        
         swath_start = random.randint(0, cities - 3)
         swath_end = random.randint(swath_start + 1, cities - 2)
         donor = parents[0]
         nondonor = parents[1]
         swath1 = donor[swath_start:swath_end]
         swath2 = nondonor[swath_start:swath_end]
-        
-        pass
+
+        child = [None]*len(donor)
+        # splice swath from donor into child
+        for i in range(swath_start,swath_end):
+            child[i] = donor[i]
+
+        # insert non-conflicting alleles from nondonor into child
+        for i in nondonor:
+            if (i not in swath1) and (i not in swath2):
+                child[nondonor.index(i)] = i
+
+        # fill in rest of child
+        for i in range(len(child)):
+            if child[i] == None:
+                match = nondonor[i]
+                donor_index = donor.index(match)
+                child[i] = nondonor[donor_index]
+
+        return child
 
     def apply_hillclimb(solution, start_end, iterations):
         best = solution
