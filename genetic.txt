@@ -279,3 +279,11 @@ Time: 62.422. Genetic, random mutation, 20 cities, 1000 generations.
 Time: 62.422. Genetic, OX crossover, 20 cities, 1000 generations. 
 Time: 44.763. Genetic, random mutation, 20 cities, 1000 generations. 
 Time: 44.763. Genetic, OX crossover, 20 cities, 1000 generations. 
+Time: 0.126. Genetic, random mutation, 5 cities, 100 generations. 
+Time: 0.126. Genetic, OX crossover, 5 cities, 100 generations. 
+Time: 8.317. Genetic, random mutation, 10 cities, 1000 generations. 
+Time: 8.317. Genetic, OX crossover, 10 cities, 1000 generations. 
+Time: 0.832. Genetic, random mutation, 10 cities, 100 generations. 
+Time: 0.832. Genetic, OX crossover, 10 cities, 100 generations. 
+Time: 0.843. Genetic, random mutation, 10 cities, 100 generations. 
+Time: 0.843. Genetic, OX crossover, 10 cities, 100 generations. 

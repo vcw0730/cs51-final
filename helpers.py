@@ -49,9 +49,9 @@ def scale_distance(d1, d2, line_len):
     return (len_d1, len_d2)
 
 
-def print_path(num, solution_set, distance_set, start_end, cities, d, t):
+def print_path(num, solution_set, distance_set, start_end, cities, d, t1, t2):
     assert (num < 3 and num > -1)
-    create_png(num, solution_set, distance_set, start_end, cities, d, t)
+    create_png(num, solution_set, distance_set, start_end, cities, d, t1, t2)
     print "Current path for traveling between these", cities, "cities is: "
     print " 1 ) ", start_end
     sol = solution_set[num]
@@ -61,7 +61,7 @@ def print_path(num, solution_set, distance_set, start_end, cities, d, t):
     print "Total distance traveled:", distance_set[num]
     return
 
-def create_png(num, solution_set, distance_set, start_end, cities, d, t):
+def create_png(num, solution_set, distance_set, start_end, cities, d, t1, t2):
     path = solution_set[num]
     city = start_end
     path.append(start_end)
@@ -114,8 +114,8 @@ def create_png(num, solution_set, distance_set, start_end, cities, d, t):
     draw.line([(280,20), (300 + d1, 20)], fill = (255, 0, 0), width = 5)
     draw.line([(280,30), (300 + d2, 30)], fill = (0, 0, 255), width = 5)
 
-    draw.text((10,20), "Distance: " + str(distance_set[num]), font=font, fill = (0,0,0))
-    draw.text((10,30), "Baseline distance: " + str(d), font=font, fill = (0,0,0))
+    draw.text((10,20), "Distance: " + str(distance_set[num]) + ", " + str(t1) + " seconds", font=font, fill = (0,0,0))
+    draw.text((10,30), "Baseline distance: " + str(d) + ", " + str(t2) + " seconds", font=font, fill = (0,0,0))
     draw.text((10,40), "Percent error: " + str(error) + "%", font=font, fill = (0,0,0))
     if num == 0:
         name = "greedy"
@@ -124,7 +124,7 @@ def create_png(num, solution_set, distance_set, start_end, cities, d, t):
     else:
         name = "dynamic"
     filename = "tsp_" + name + ".png"
-    draw.text((10,10), "Algorithm used: " + name + ", time: " + str(t) + " seconds", font=font, fill = (0,0,0))
+    draw.text((10,10), "Algorithm used: " + name, font=font, fill = (0,0,0))
 
     del draw
     im.save(filename, "PNG")

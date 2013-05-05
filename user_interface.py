@@ -122,7 +122,7 @@ number less than 2^25 to account for hardware limitations. \n --> "))
             solution_set = update(solution_set, 2, res[0])
             time_set = update(time_set, 2, t)
 
-        print_path(y - 1, solution_set, distance_set, start_end, cities, dist, time_set[y-1])
+        print_path(y - 1, solution_set, distance_set, start_end, cities, dist, time_set[y-1], time_set[2])
         f = open('accuracy.txt', 'a')
 
         if y == 1:
