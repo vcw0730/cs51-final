@@ -57,7 +57,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         return best
 
     def worst_sol(solution_lst, g, initial):
-        # returns position in the array of the best solution in the array (solution_lst)
+        """ returns position of the worst solution in the solution_lst"""
         worst = 0
         for i in range(len(solution_lst) - 1):
             if solution_len(solution_lst[i], g, initial) > solution_len(solution_lst[worst], g, initial):
@@ -197,7 +197,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
 
     def mutation_simulatedAnnealing(solution_lst, g, initial):
         """ choose solution from solution_lst at random, preserve best solution, remove
-            the worst solution and replace it with a mutation of the best """
+            the worst solution and replace it with a mutation of a random solution """
         bst = best_sol(solution_lst, g, initial)
         wst = worst_sol(solution_lst, g, initial)
         
@@ -246,7 +246,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         best = best_sol(newsols, g, start_end)
         for i in range(num):
             newsols = crossover(newsols, g, start_end, cities) # to change which crossover is used, go to def crossover itself
-            r = random.randint(0,10)
+            r = random.randint(0, 10)
             if r == 0:
                 newsols = mutation_random(newsols, g, start_end)
 #                newsols = mutation_hill(newsols, g, start_end)
