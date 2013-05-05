@@ -21,7 +21,7 @@ def choose_option(g, start_end, locs, cities, e_file, solution_set, distance_set
             cities = int(raw_input("Greedy solution has a run time on the scale \
                                    of O(n-1!), so please choose a smaller value \
                                    for your cities! \n --> "))
-        g, locs, start_end = generate_graph(cities)
+            g, locs, start_end = generate_graph(cities)
 
         # start_timer
         t1 = time.time()
@@ -77,13 +77,13 @@ number less than 2^25 to account for hardware limitations. \n --> "))
             cities = int(raw_input("Dynamic Programming solution takes space \
                         on the scale of O(n * 2^n) and run time of O(n^2 * 2^n) \
                         so please choose a smaller value! \n --> "))
-        g, locs, start_end = generate_graph(cities)
+            g, locs, start_end = generate_graph(cities)
 
         # start timer
         t3 = time.time()
 
         # dynamic result
-        dynamic_result = tsp_dynamic(g)
+        dynamic_result = tsp_dynamic(g, start_end, cities - 1, locs)
 
         # end timer
         t3 = round(time.time() - t3, 3)        
@@ -104,13 +104,17 @@ number less than 2^25 to account for hardware limitations. \n --> "))
                          1: greedy \n \
                          2: genetic \n \
                          3: dynamic \n --> "))
-        print solution_set[y-1], distance_set[y-1]
         if((y < 1 or y > 3) or (distance_set[y - 1] == [])):
             print "Sorry, either this algorithm doesn't exist or this \
                             algorithm has not been run on the graph yet!, try again."
             choose_option(g, start_end, locs, cities, e_file, solution_set, distance_set)
 
-        print_path(y - 1, solution_set, distance_set, start_end, cities)
+        dist = distance_set[2]
+        if dist == []:
+            dist = tsp_dynamic(g, start_end, cities - 1, locs)
+            dist = dist[1]            
+
+        print_path(y - 1, solution_set, distance_set, start_end, cities, dist)
 
     # generate new graph
     elif option == 5:
@@ -128,13 +132,14 @@ number less than 2^25 to account for hardware limitations. \n --> "))
         if y == 1:
             f = open('cities.txt', 'r')
             points = f.read().splitlines()
-            locs = filter(lambda x: x != "", cities)
-            for i in range(len(points)): 
+            points = filter(lambda x: x != "", points)
+            cities = len(points)
+            for i in range(cities): 
                 points[i] = ast.literal_eval(points[i])
-            g = Graph(len(points))
-            g.points = locs
+            g.points = points
             g.graph = g.generate_complete_graph()
-            start_end = locs.pop()
+            start_end = points.pop(0)
+            locs = points
             solution_set = clear()
             distance_set = clear()
             f.close()
@@ -149,7 +154,7 @@ number less than 2^25 to account for hardware limitations. \n --> "))
             # get initial city
             x_init = int(raw_input("x-coordinate of initial city is: "))
             y_init = int(raw_input("y-coordinate of initial city is: "))
-            city = (x_init, y_init)
+            start_end = (x_init, y_init)
 
             # get all the other cities
             for i in range(1,c):
@@ -158,14 +163,15 @@ number less than 2^25 to account for hardware limitations. \n --> "))
                 y = int(raw_input("y-coordinate of city #"+number+" is: "))
                 locations.append((x,y))
 
-            points = city + locations
+            points = start_end + locations
             
             # update like everything (wipe solutions clean)
             assert (len(locations) == c-1)
             g = Graph(len(locations))
             g.points = points
             g.graph = g.generate_complete_graph()
-            start_end = city
+            locs = locations
+            cities = c
             solution_set = clear()
             distance_set = clear()
         else:
@@ -173,4 +179,5 @@ number less than 2^25 to account for hardware limitations. \n --> "))
     elif option == 0:
         e_file.close()
         return
+    print locs
     choose_option(g, start_end, locs, cities, e_file, solution_set, distance_set)

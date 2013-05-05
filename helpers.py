@@ -50,18 +50,19 @@ def update_dist(distance_set, num, n):
         print "Error: num is not in range!"
     return distance_set
 
-def print_path(num, solution_set, distance_set, start_end, cities):
+def print_path(num, solution_set, distance_set, start_end, cities, d):
     assert (num < 3 and num > -1)
-    create_png(num, solution_set)
+    create_png(num, solution_set, distance_set, start_end, cities, d)
     print "Current path for traveling between these", cities, "cities is: "
-    print " 1 ) ", get_start_end
+    print " 1 ) ", start_end
+    sol = solution_set[num]
     for i in range(len(sol)):
-        print "", i + 2, ") ", solution_set[i]
+        print "", i + 2, ") ", sol[i]
     print "", len(solution_set) + 2, ") ", start_end
     print "Total distance traveled:", distance_set[num]
     return
 
-def create_png(num, solution_set, distance_set, start_end, cities):
+def create_png(num, solution_set, distance_set, start_end, cities, d):
     path = solution_set[num]
     city = start_end
     path.append(start_end)
@@ -96,7 +97,7 @@ def create_png(num, solution_set, distance_set, start_end, cities):
     
     #draw vertices (that aren't the starting/ending)
     path.remove(city)
-    for i in range(path_length):
+    for i in range(len(path)):
         pos = path[i]
         x = s*pos[0] + p
         y = s*pos[1] + p
@@ -108,7 +109,15 @@ def create_png(num, solution_set, distance_set, start_end, cities):
     y = s*city[1] + p
     draw.ellipse((x - 5, y - 5, x + 5, y + 5), outline = (0, 0, 0), fill = (255,0,0))
 
-    draw.text((10,10), "Distance: " + str(get_dist(num)), font=font, fill = (0,0,0))
+    d1 = distance_set[num]
+    d2 = d
+    min_dist = min(d1, d2)
+
+    draw.line([(200,20), ], fill = (255, 0, 0))
+    draw.line([(200,30), ], fill = (0, 0, 255))
+
+    draw.text((10,20), "Distance: " + str(distance_set[num]), font=font, fill = (0,0,0))
+    draw.text((10,30), "Baseline distance: " + str(d), font=font, fill = (0,0,0))
     if num == 0:
         name = "greedy"
     elif num == 1:
@@ -116,7 +125,7 @@ def create_png(num, solution_set, distance_set, start_end, cities):
     else:
         name = "dynamic"
     filename = "tsp_" + name + ".png"
-    draw.text((10,20), "Algorithm used: " + name, font=font, fill = (0,0,0))
+    draw.text((10,10), "Algorithm used: " + name, font=font, fill = (0,0,0))
 
     del draw
     im.save(filename, "PNG")
