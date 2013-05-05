@@ -1,7 +1,7 @@
 README
 
 - This project is implemented in Python 2.7.x, and requires that the Python Imaging Library is installed.
-- To run the project, please move cities.txt from \data into the \code folder, then simply run main.py. We ask that ALL input be in integer form, ex. "five" is not acceptable input, but 5 is.
+- To run the project, please move cities.txt from \data into the \code folder with the rest of the code, then simply run main.py. We ask that ALL input be in integer form, ex. "five" is not acceptable input, but 5 is.
 - The program will, when run, initialize and ask the user for an initial value for the number, n, of cities that will be solved on. This will generate n random cities whose coordinates are within (0,0) and (100,100). This data set can be changed at any time.
 - The user then has six options to choose from. The user can run one of three algorithms on the randomly generated data set, print the solution stored by the latest iteration of any of the three algorithms (if one has been run on the current data set), generate a new set of n random cities (where n is determiend by the user), or give the program a a set of cities either by reading locations stored in cities.txt or manually entering coordinates into the command line. The user can also choose to terminate the program.
 

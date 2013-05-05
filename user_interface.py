@@ -47,8 +47,7 @@ def choose_option(g, start_end, locs, cities, e_file, solution_set, distance_set
     # run genetic
     elif option == 2:
         sols = []
-        children = int(raw_input("How many rounds to run genetic? Please enter a \
-number less than 2^25 to account for hardware limitations. \n --> "))
+        children = int(raw_input("How many rounds to run genetic? Please be aware larger values will take more time. \n --> "))
         print "Running... "
 
         # start time

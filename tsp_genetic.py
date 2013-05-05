@@ -30,6 +30,9 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         for i in range(len(solution_lst)):
             new_sol_lst[i] = shuffle_sol(solution_lst[i])
 
+        for i in range(len(new_sol_lst)):
+            assert new_sol_lst[i] != None
+
         return new_sol_lst
 
     def solution_len(sol, g, start_end):
@@ -42,6 +45,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             total_dist += g.distance(sol[i], sol[i + 1])
         # add distance between end of solution and initial city
         total_dist += g.distance(sol[length - 1], start_end)
+        assert total_dist > 0
         return total_dist
 
     def fitness(sol, g, initial):
@@ -94,6 +98,8 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         while p1 is p2:
             p1 = weighted_random(solution_lst, g, initial)
             p2 = weighted_random(solution_lst, g, initial)
+        assert p1 != None
+        assert p2 != None
         return (p1, p2)
 
     def get_rand(parentsol, child):
@@ -185,6 +191,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
                 #doesn't matter which one is appended
                 child.append(next1)
                 x = next1
+        assert len(child) == len(parents[2])
         return child
 
     def mutation_random(solution_lst, g, initial):

@@ -35,7 +35,7 @@ def update(ourset, num, n):
     return ourset
 
 def clear():
-    """ use to clear solution_set or distance_set """
+    """ use to clear solution_set, distance_set, or time_set """
     return [[], [], []]
 
 def percent_error(d1, d2):
@@ -68,15 +68,15 @@ def create_png(num, solution_set, distance_set, start_end, cities, d, t1, t2):
     path_length = len(path)
     
     size = (500,500)
-    padding = (50,50)
     im = Image.new("RGB",size,(255,255,255))
 
     draw = ImageDraw.Draw(im)
     font = ImageFont.load_default()
 
     s = 4 #scale
-    p = 50 #padding, shift map over to middle of image
-    tp = 15 + p #shift over text padding a bit to account for vertices later        
+    hp = 50 # padding, shift map over to middle of image
+    vp = 75 # more padding
+    tp = 12 + hp #shift over text padding a bit to account for vertices later        
     low_bound = 90
     color = (255 - low_bound) / (path_length - 1) # use to change colors
 
@@ -85,27 +85,27 @@ def create_png(num, solution_set, distance_set, start_end, cities, d, t1, t2):
         c1 = path[i]
         c2 = path[i + 1]
 
-        draw.line((s*c1[0]+p, s*c1[1]+p, s*c2[0]+p, s*c2[1]+p), fill = (0,0,0))
+        draw.line((s*c1[0]+hp, s*c1[1]+vp, s*c2[0]+hp, s*c2[1]+vp), fill = (0,0,0))
         #label each city with coordinates
-        draw.text((s*c1[0]+tp, s*c1[1]+p), str(c1), font=font, fill = (0,0,i*color+low_bound))
+        draw.text((s*c1[0]+tp, s*c1[1]+vp), str(c1), font=font, fill = (0,0,i*color+low_bound))
 
     c1 = path[path_length-1] #this is the starting city due to the way append works
     c2 = path[0]
-    draw.line((s*c1[0]+p, s*c1[1]+p, s*c2[0]+p, s*c2[1]+p), fill = (0,0,0))
-    draw.text((s*c1[0]+tp, s*c1[1]+p), str(c1), font=font, fill = (255,0,0))
+    draw.line((s*c1[0]+hp, s*c1[1]+vp, s*c2[0]+hp, s*c2[1]+vp), fill = (0,0,0))
+    draw.text((s*c1[0]+tp, s*c1[1]+vp), str(c1), font=font, fill = (255,0,0))
     
     #draw vertices (that aren't the starting/ending)
     path.remove(city)
     for i in range(len(path)):
         pos = path[i]
-        x = s*pos[0] + p
-        y = s*pos[1] + p
+        x = s*pos[0] + hp
+        y = s*pos[1] + vp
         draw.ellipse((x - 5, y - 5, x + 5, y + 5), outline=(0, 0, 0),
                      fill = ((0, 0, (i*color+low_bound))))
 
     #draw starting/ending city with RED
-    x = s*city[0] + p
-    y = s*city[1] + p
+    x = s*city[0] + hp
+    y = s*city[1] + vp
     draw.ellipse((x - 5, y - 5, x + 5, y + 5), outline = (0, 0, 0), fill = (255,0,0))
 
     d1, d2 = scale_distance(distance_set[num], d, 170)
