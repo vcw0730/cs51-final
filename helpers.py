@@ -111,13 +111,19 @@ def create_png(num, solution_set, distance_set, start_end, cities, d):
 
     d1 = distance_set[num]
     d2 = d
-    min_dist = min(d1, d2)
+    percent_error = round(((abs(d1 - d2) / d2) * 100), 2)
+    larger = max(d1, d2)
 
-    draw.line([(200,20), ], fill = (255, 0, 0))
-    draw.line([(200,30), ], fill = (0, 0, 255))
+    line_len = 200
+    len_d1 = 200 + (d1 * (line_len/larger))
+    len_d2 = 200 + (d2 * (line_len/larger))
+
+    draw.line([(200,20), (len_d1, 20)], fill = (255, 0, 0), width = 5)
+    draw.line([(200,30), (len_d2, 30)], fill = (0, 0, 255), width = 5)
 
     draw.text((10,20), "Distance: " + str(distance_set[num]), font=font, fill = (0,0,0))
     draw.text((10,30), "Baseline distance: " + str(d), font=font, fill = (0,0,0))
+    draw.text((10,40), "Percent error: " + str(percent_error) + "%", font=font, fill = (0,0,0))
     if num == 0:
         name = "greedy"
     elif num == 1:

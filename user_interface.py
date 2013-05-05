@@ -179,5 +179,4 @@ number less than 2^25 to account for hardware limitations. \n --> "))
     elif option == 0:
         e_file.close()
         return
-    print locs
     choose_option(g, start_end, locs, cities, e_file, solution_set, distance_set)
