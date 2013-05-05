@@ -34,14 +34,9 @@ def update_solution(solution_set, num, newsol):
         print "Error: num is not in range!"
     return solution_set
 
-def clear_solution():
-    """ clears solutions """
-    solution_set = []
-    distance_set = []
-    for i in range(ALGORITHMS):
-        solution_set.append([])
-        distance_set.append([])
-    return solution_set, distance_set
+def clear():
+    """ use to clear solution_set or distance_set """
+    return [[], [], []]
 
 def update_dist(distance_set, num, n):
     """ updates our distances depending on algorithm """

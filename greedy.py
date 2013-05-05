@@ -25,9 +25,9 @@ def greedy (g, start_end, locs):
             shortest edge to an unused vertex """
         dist = float("inf")
         for elem in not_used:
-            if g.graph[loc][elem] < dist:
+            if g.graph[location][elem] < dist:
                 temp = elem
-                dist = g.graph[loc][elem]
+                dist = g.graph[location][elem]
         return dist, temp
 
     # location stores our current location
