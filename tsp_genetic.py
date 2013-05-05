@@ -137,6 +137,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         best = solution
         best_distance = solution_len(solution, g, start_end)
         while (iterations > 0):
+            solution = best
             r1 = random.randint(0, len(solution) - 1)
             r2 = random.randint(0, len(solution) - 1)
             solution[r1], solution[r2] = solution[r2], solution[r1]
@@ -144,7 +145,8 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             if distance < best_distance:
                 best = solution
                 best_distance = distance
-        return solution
+            iterations -= 1
+        return best
         
     def crossover_greedy(parents, cities):
         # given tuple of parents generated from choose_parents, crossover
