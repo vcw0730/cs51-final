@@ -126,7 +126,8 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         reordered = nondonor[swath_end:] + nondonor[:swath_end]
         filtered = filter(lambda x: x not in swath, reordered)
 
-        child = filtered[-swath_start:] + swath + filtered[:rest_length]
+        child = filtered[:swath_start] + swath + filtered[-rest_length:]
+        assert len(child) == len(donor)
         
         return child
 
@@ -142,15 +143,15 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
 
     def apply_hillclimb(solution, start_end, iterations):
         best = solution
-        best_distance = solution_len(solution, g, start_end)
+        best_distance = solution_len(best, g, start_end)
         while (iterations > 0):
-            solution = best
-            r1 = random.randint(0, len(solution) - 1)
-            r2 = random.randint(0, len(solution) - 1)
-            solution[r1], solution[r2] = solution[r2], solution[r1]
-            distance = solution_len(solution, g, start_end)
+            temp = best
+            r1 = random.randint(0, len(temp) - 1)
+            r2 = random.randint(0, len(temp) - 1)
+            temp[r1], temp[r2] = temp[r2], temp[r1]
+            distance = solution_len(temp, g, start_end)
             if distance < best_distance:
-                best = solution
+                best = temp
                 best_distance = distance
             iterations -= 1
         return best
@@ -269,12 +270,14 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         for i in range(num):
             newsols = crossover(newsols, g, start_end, cities) # to change which crossover is used, go to def crossover itself
             r = random.randint(0, 10)
-            if r == 0:
-                newsols = mutation_random(newsols, g, start_end)
-#                newsols = mutation_hill(newsols, g, start_end)
+#            if r == 0:
+#                newsols = mutation_random(newsols, g, start_end)
 #                newsols = mutation_simulatedAnnealing(newsols, g, start_end)
-            for each in range(newsols):
-                newsols[each] = apply_hillclimb(newsols[each], start_end, iterations)
+            iterations = cities
+            for each in range(len(newsols)):
+                r = random.randint(0,10)
+                if r == 1:
+                    newsols[each] = apply_hillclimb(newsols[each], start_end, iterations)
                 
         best = best_sol(newsols, g, start_end)
         t2 = time.time()

@@ -330,3 +330,28 @@ Greedy time: 0.0 for 5 cities
 Dynamic, time: 0.0 for 5 cities 
 Greedy time: 0.0 for 5 cities 
 Greedy time: 0.0 for 5 cities 
+Genetic time: 0.823 for 10 cities, 100 crossovers 
+Dynamic, time: 0.081 for 10 cities 
+Genetic time: 0.06 for 5 cities, 10 crossovers 
+Genetic time: 0.063 for 5 cities, 10 crossovers 
+Dynamic, time: 0.001 for 5 cities 
+Genetic time: 1.241 for 10 cities, 100 crossovers 
+Dynamic, time: 0.04 for 10 cities 
+Genetic time: 0.628 for 5 cities, 10 crossovers 
+Genetic time: 0.744 for 5 cities, 10 crossovers 
+Genetic time: 0.988 for 5 cities, 10 crossovers 
+Genetic time: 0.191 for 5 cities, 10 crossovers 
+Genetic time: 0.168 for 5 cities, 10 crossovers 
+Genetic time: 0.175 for 5 cities, 10 crossovers 
+Genetic time: 0.433 for 5 cities, 10 crossovers 
+Genetic time: 0.211 for 5 cities, 5 crossovers 
+Genetic time: 0.244 for 5 cities, 5 crossovers 
+Genetic time: 0.161 for 5 cities, 3 crossovers 
+Genetic time: 0.203 for 5 cities, 3 crossovers 
+Genetic time: 0.228 for 5 cities, 3 crossovers 
+Genetic time: 0.124 for 5 cities, 3 crossovers 
+Genetic time: 1.306 for 10 cities, 100 crossovers 
+Dynamic, time: 0.044 for 10 cities 
+Greedy time: 0.0 for 10 cities 
+Genetic time: 0.109 for 5 cities, 100 crossovers 
+Dynamic, time: 0.001 for 5 cities 
