@@ -65,7 +65,7 @@ def tsp_dynamic(g, start, num_vertices, vertices):
     # index 4 (+1 = 5)-> 101 (city 1 and 3)
     # index 5 (+1 = 6)-> 110 (city 2 and 3)
     # index 6 (+1 = 7)-> 111 (city 1, 2, 3)
-    def tsp (D, g, vertices, num_vertices, start):
+    def all_pairs_shortest_path (D, g, vertices, num_vertices, start):
         # total number of subsets
         total_num_subsets = 2**num_vertices
         # for each size of subset
@@ -107,6 +107,6 @@ def tsp_dynamic(g, start, num_vertices, vertices):
         
         return final, total
         
-    return tsp(D, g, vertices, num_vertices, start)
+    return all_pairs_shortest_path(D, g, vertices, num_vertices, start)
     
  

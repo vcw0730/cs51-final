@@ -305,6 +305,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         t1 = time.time()
         newsols = gen_population(cities, locs, sols)
         best = best_sol(newsols, g, start_end)
+        iterations = 10
         for i in range(num):
             newsols = crossover(newsols, g, start_end, cities) # to change which crossover is used, go to def crossover itself
             r = random.randint(0, 10)
