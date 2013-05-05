@@ -11,7 +11,7 @@ solution = [[],[],[]]
 def generate_graph(num):
     """ instantiate graph and locations """
     g = Graph(num)
-    locs = g.points
+    locs = copy.copy(g.points)
 
     # remove start city
     start_end = locs.pop()

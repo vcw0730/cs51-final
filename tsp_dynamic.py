@@ -20,6 +20,7 @@ def tsp_dynamic(g, start, num_vertices, vertices):
     # one for each pair of set and city
     # we append inf for each C(S, 1) because we can't end at
     # city 1 after going through a series of cities
+    
     for city in range(1, num_vertices + 1):
         D.append([])
         for subsets in range(1, 2**num_vertices):
@@ -79,7 +80,7 @@ def tsp_dynamic(g, start, num_vertices, vertices):
                         subvalue = subsets_bin - (10**j)                       # determine what the binary rep without j is
                         remaining_cities = find_cities(subvalue)   # determine which cities are left 
                         best_k = (float("inf"), None)                          # accumulator
-                        for k in remaining_cities:                             # for each k in C(S-{j}, k)
+                        for k in remaining_cities:                             # for each k in C(S-{j}, k) 
                             dist = D[k][int(str(subvalue), 2) - 1][0] + g.graph[vertices[k]][vertices[j]]
                             if dist < best_k[0]:
                                 best_k = (dist, (k, int(str(subvalue), 2) - 1))

@@ -163,11 +163,11 @@ number less than 2^25 to account for hardware limitations. \n --> "))
                 y = int(raw_input("y-coordinate of city #"+number+" is: "))
                 locations.append((x,y))
 
-            points = start_end + locations
+            points = [start_end] + locations
             
             # update like everything (wipe solutions clean)
             assert (len(locations) == c-1)
-            g = Graph(len(locations))
+            g = Graph(len(points))
             g.points = points
             g.graph = g.generate_complete_graph()
             locs = locations
