@@ -156,21 +156,48 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         swath2 = nondonor[swath_start:swath_end]
 
         child = [None]*len(donor)
-        # splice swath from donor into child
-        for i in range(swath_start,swath_end):
-            child[i] = donor[i]
+        # splice swath from donor into child, put everything else as nondonor
+        for i in range(len(child)):
+            if i >= swath_start and i < swath_end:
+                child[i] = donor[i]
+            else:
+                child[i] = nondonor[i]
 
+        # eliminate repeats by checking the values in swath, swap out ones that appear
+        # elsewhere with corresponding value in same index in other basically
+        for i in range(len(child)):
+            if i >= swath_start and i < swath_end:
+                for j in range(len(child)):
+                    if child[j] == child[i] and j != i:
+                        y = nondonor[i]
+                        while y in swath1:
+                            y = nondonor[donor.index(y)]
+                        child[j] = y
+
+        """
         # insert non-conflicting alleles from nondonor into child
         for i in nondonor:
             if (i not in swath1) and (i not in swath2):
                 child[nondonor.index(i)] = i
 
+        def cross_value(donor, nondonor, ind):
+            match = nondonor[ind]
+            donor_index = donor.index(match)
+            x = nondonor[donor_index]
+            return x
+
+
         # fill in rest of child
         for i in range(len(child)):
             if child[i] == None:
-                match = nondonor[i]
-                donor_index = donor.index(match)
-                child[i] = nondonor[donor_index]
+                x = cross_value(donor, nondonor, i)
+                x1 = x
+                while x in swath1 or x in swath2:
+                    x = cross_value(donor, nondonor, x[2])
+                    print x, child
+                assert x not in child
+                child[i] = x
+        """
 
         return child
 
@@ -262,7 +289,9 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         # so that child population has the same number of solutions as the parent population
         for i in range(len(solution_lst) - 1):
             x = choose_parents(solution_lst, g, initial)
-            a = crossover_OX(x, cities)
+#            a = crossover_OX(x, cities)
+#            a = crossover_greedy(x, cities)
+            a = crossover_PMX(x, cities)
             child_pop.append(a)
         return child_pop
         
@@ -295,8 +324,9 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
 #        gen_file.write("Time: " + str(total_time) + ". Genetic, hill mutation, " + str(cities) + " cities, " + str(num) + " generations. \n")
 
 
-        gen_file.write("Time: " + str(total_time) + ". Genetic, OX crossover, " + str(cities) + " cities, " + str(num) + " generations. \n")
+#        gen_file.write("Time: " + str(total_time) + ". Genetic, OX crossover, " + str(cities) + " cities, " + str(num) + " generations. \n")
 #        gen_file.write("Time: " + str(total_time) + ". Genetic, greedy crossover, " + str(cities) + " cities, " + str(num) + " generations. \n")
+        gen_file.write("Time: " + str(total_time) + ". Genetic, PMX crossover, " + str(cities) + " cities, " + str(num) + " generations. \n")
 
         gen_file.close()
         return (newsols[best], solution_len(newsols[best],g,start_end))
