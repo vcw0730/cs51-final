@@ -225,7 +225,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             new_sol_lst.append(a)
         return new_sol_lst
         
-
+    """
     def factorial (n):
         if n < 2:
             return 0
@@ -238,6 +238,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             return False
         else:
             return True
+    """
 
     global gen_file
     gen_file = open('genetic.txt','a')
@@ -246,19 +247,16 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         return (locs, solution_len(locs, g, start_end))
     else:
         t1 = time.time()
-        sols = gen_population(cities, locs, sols)
-        best = best_sol(sols, g, start_end)
+        newsols = gen_population(cities, locs, sols)
+        best = best_sol(newsols, g, start_end)
         for i in range(num):
-            if not(max_num(sols, cities)):
-                return (sols[best], solution_len(sols[best], g,start_end))
-            else:
-                sols = crossover(sols, g, start_end, cities) # to change which crossover is used, go to def crossover itself
-                r = random.randint(0,10)
-                if r == 0:
-                    sols = mutation_random(sols, g, start_end)
-    #                sols = mutation_hill(sols, g, start_end)
-    #                sols = mutation_simulatedAnnealing(sols, g, start_end)
-        best = best_sol(sols, g, start_end)
+            newsols = crossover(newsols, g, start_end, cities) # to change which crossover is used, go to def crossover itself
+            r = random.randint(0,10)
+            if r == 0:
+                newsols = mutation_random(newsols, g, start_end)
+#                newsols = mutation_hill(newsols, g, start_end)
+#                newsols = mutation_simulatedAnnealing(newsols, g, start_end)
+        best = best_sol(newsols, g, start_end)
         t2 = time.time()
         total_time = round(t2 - t1,3)
 
@@ -272,4 +270,4 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
 #        gen_file.write("Time: " + str(total_time) + ". Genetic, greedy crossover, " + str(cities) + " cities, " + str(num) + " generations. \n")
 
         gen_file.close()
-        return (sols[best], solution_len(sols[best],g,start_end))
+        return (newsols[best], solution_len(newsols[best],g,start_end))
