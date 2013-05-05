@@ -270,14 +270,13 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         for i in range(num):
             newsols = crossover(newsols, g, start_end, cities) # to change which crossover is used, go to def crossover itself
             r = random.randint(0, 10)
-#            if r == 0:
-#                newsols = mutation_random(newsols, g, start_end)
+            if r == 0:
+                newsols = mutation_random(newsols, g, start_end)
 #                newsols = mutation_simulatedAnnealing(newsols, g, start_end)
-            iterations = cities
-            for each in range(len(newsols)):
-                r = random.randint(0,10)
-                if r == 1:
-                    newsols[each] = apply_hillclimb(newsols[each], start_end, iterations)
+#            iterations = cities
+#            for each in range(len(newsols)):
+#                if r == 1:
+#                    newsols[each] = apply_hillclimb(newsols[each], start_end, iterations)
                 
         best = best_sol(newsols, g, start_end)
         t2 = time.time()

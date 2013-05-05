@@ -58,7 +58,7 @@ def print_path(num, solution_set, distance_set, start_end, cities, d):
     sol = solution_set[num]
     for i in range(len(sol)):
         print "", i + 2, ") ", sol[i]
-    print "", len(solution_set) + 2, ") ", start_end
+    print "", len(sol) + 2, ") ", start_end
     print "Total distance traveled:", distance_set[num]
     return
 
