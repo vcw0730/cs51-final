@@ -4,17 +4,18 @@ from greedy import *
 from PIL import Image, ImageDraw, ImageFont
 import time, os, ast
 
-solution = ([],[],[])
 #solution[0] = greedy, solution[1] = genetic, solution[2] = dynamic
+solution = [[],[],[]]
 
 def update_solution(num, newsol):
+    """ updates our solution depending on algorithm """
     global solution
     if num == 0:
-        solution = (newsol,) + solution[1:3]
+        solution[0] = newsol
     elif num == 1:
-        solution = solution[0:1] + (newsol,) + solution[2:3]
+        solution[1] = newsol
     elif num == 2:
-        solution = solution[0:2] + (newsol,)
+        solution[2] = newsol
     else:
         print "Error: num is not in range!"
     return
@@ -25,41 +26,35 @@ def clear_solution():
         update_dist(i, None)
 
 def update_cities(n):
-    global cities
     while n < 2:
         n = int(raw_input("Please enter a number greater than 1! "))
     cities = n
     return
 
 def update_graph(n):
-    global a
     a = Graph(n)
     return
 
 def update_locs(lst):
-    global locs
     locs = lst
     return
 
 def update_start_end(city):
-    global start_end
     start_end = city
     return
 
 def update_dist(num, n):
-    global dist
     if num == 0:
-        dist = (n,) + dist[1:3]
+        dist[0] = n
     elif num == 1:
-        dist = dist[0:1] + (n,) + dist[2:3]
+        dist[1] = n
     elif num == 2:
-        dist = dist[0:2] + (n,)
+        dist[2] = n
     else:
         print "Error: num is not in range!"
     return
 
 def get_solution(num):
-    global solution
     assert num < 3 and num > -1
     return solution[num]
 
@@ -85,9 +80,9 @@ def get_dist(num):
     return dist[num]
 
 def reorder_sol(num, sol, initial):
-    # given a solution and an initial city, reorders list so that
-    # initial city is at the front but otherwise unchanged
-    # except it returns all the cities *after* initial
+    """ given a solution and an initial city, reorders list so that
+        initial city is at the front but otherwise unchanged
+        except it returns all the cities *after* initial """
     assert initial in sol
     x = sol.index(initial)
     newsol = sol[x+1:] + sol[:x]
@@ -319,21 +314,17 @@ def create_png(num):
 def main():
     print("Initializing...")
 
-    global a, cities, locs, start_end, dist
-    global e_file
-    dist = (None, None, None)
+    a, cities, locs, start_end, dist
+    dist = [None, None, None]
     e_file = open('efficiency.txt','a')
 
-    print("When asked for input, please only enter in integer values!")
-
-    prompt1 = "How many cities would you like to visit? "
-    cities = int(raw_input(prompt1))
+    cities = int(raw_input("How many cities would you like to visit? Please only use integers. "))
     while (cities < 2):
         cities = int(raw_input("Please choose a number greater than 1! "))
-    a = Graph(cities)
-    locs = a.points
-    start_end = locs[0]
-    locs.remove(start_end)
+        
+    g = Graph(cities)
+    locs = g.points
+    start_end = locs.pop()
     assert(len(locs) == cities - 1)
     assert(start_end not in locs)
 

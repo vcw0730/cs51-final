@@ -1,43 +1,50 @@
 from heap_binary import *
 from graph_dictionary import *
 
-def greedy (G):
-  
+def greedy (g, start_end, locs):
+    """ greedy applies the greedy algorithm by taking the shortest
+        edge coming out of each vertex
+        parameters g: graph, start_end: start vertex, locs = vertices
+        returns tuple (tour, distance) """
+
+    # not_used: stores unused vertices
+    # result: stores subtours
     not_used = []
     result = []
-    
-    # vertices is an array of our vertices
-    # num_vertices is the number of vertices we have
-    vertices = G.graph.keys()
-    num_vertices = len(vertices)
-    
-    for each in vertices:
+
+    # number of cities
+    num_vertices = len(locs)
+
+    # add all vertices into unused
+    for each in locs:
         not_used.append(each)
-      
-    # our start
-    start = not_used.pop()
-#    print "Your start city is ", start
-    result.append(start)
-    total_dist = 0
-      
-    def next_vertex (G, start, not_used, temp):
+
+    
+    def next_vertex (g, location, not_used, temp):
+        """ Given the graph and the current location, find the
+            shortest edge to an unused vertex """
         dist = float("inf")
         for elem in not_used:
-            if G.graph[start][elem] < dist:
+            if g.graph[loc][elem] < dist:
                 temp = elem
-                dist = G.graph[start][elem]
+                dist = g.graph[loc][elem]
         return dist, temp
 
-    location = start
+    # location stores our current location
+    # tracks total distance
+    location = start_end
+    total_dist = 0
+
+    # traverse through graph and find next closest vertex until reaches tour
     while len(not_used) != 0:
         temp = None
-        distance, elem = next_vertex (G, location, not_used, temp)
+        distance, elem = next_vertex (g, location, not_used, temp)
         result.append(elem)
         total_dist += distance
         not_used.remove(elem)
-        location = elem    
-
-    total_dist += G.graph[location][start]
-    result.append(start)
+        location = elem
+        
+    # add path returning to start
+    total_dist += g.graph[location][start_end]
     
     return result, total_dist
