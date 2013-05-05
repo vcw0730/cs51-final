@@ -21,12 +21,13 @@ def main():
     # generate_graphs
     g, locs, start_end = generate_graph(cities)
 
-    # empty solution_set, distance_set
+    # empty solution_set, distance_set, time_set
     solution_set = [[], [], []]
     distance_set = [[], [], []]
+    time_set = [[], [], []]
 
     # prompt for algorithm to run
-    choose_option(g, start_end, locs, cities, e_file, solution_set, distance_set)
+    choose_option(g, start_end, locs, cities, e_file, solution_set, distance_set, time_set)
     
 
 if __name__ == "__main__":

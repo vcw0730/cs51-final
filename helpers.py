@@ -22,37 +22,36 @@ def generate_graph(num):
 
     return g, locs, start_end
 
-def update_solution(solution_set, num, newsol):
-    """ updates our solution depending on algorithm """
+def update(ourset, num, n):
+    """ updates our set (solution/distance/time) depending on algorithm """
     if num == 0:
-        solution_set[0] = newsol
+        ourset[0] = n
     elif num == 1:
-        solution_set[1] = newsol
+        ourset[1] = n
     elif num == 2:
-        solution_set[2] = newsol
+        ourset[2] = n
     else:
         print "Error: num is not in range!"
-    return solution_set
+    return ourset
 
 def clear():
     """ use to clear solution_set or distance_set """
     return [[], [], []]
 
-def update_dist(distance_set, num, n):
-    """ updates our distances depending on algorithm """
-    if num == 0:
-        distance_set[0] = n
-    elif num == 1:
-        distance_set[1] = n
-    elif num == 2:
-        distance_set[2] = n
-    else:
-        print "Error: num is not in range!"
-    return distance_set
+def percent_error(d1, d2):
+    return round(((abs(d1 - d2) / d2) * 100), 2)
 
-def print_path(num, solution_set, distance_set, start_end, cities, d):
+def scale_distance(d1, d2, line_len):
+    larger = max(d1, d2)
+
+    len_d1 = (d1 * (line_len/larger))
+    len_d2 = (d2 * (line_len/larger))
+    return (len_d1, len_d2)
+
+
+def print_path(num, solution_set, distance_set, start_end, cities, d, t):
     assert (num < 3 and num > -1)
-    create_png(num, solution_set, distance_set, start_end, cities, d)
+    create_png(num, solution_set, distance_set, start_end, cities, d, t)
     print "Current path for traveling between these", cities, "cities is: "
     print " 1 ) ", start_end
     sol = solution_set[num]
@@ -62,7 +61,7 @@ def print_path(num, solution_set, distance_set, start_end, cities, d):
     print "Total distance traveled:", distance_set[num]
     return
 
-def create_png(num, solution_set, distance_set, start_end, cities, d):
+def create_png(num, solution_set, distance_set, start_end, cities, d, t):
     path = solution_set[num]
     city = start_end
     path.append(start_end)
@@ -109,21 +108,15 @@ def create_png(num, solution_set, distance_set, start_end, cities, d):
     y = s*city[1] + p
     draw.ellipse((x - 5, y - 5, x + 5, y + 5), outline = (0, 0, 0), fill = (255,0,0))
 
-    d1 = distance_set[num]
-    d2 = d
-    percent_error = round(((abs(d1 - d2) / d2) * 100), 2)
-    larger = max(d1, d2)
+    d1, d2 = scale_distance(distance_set[num], d, 170)
+    error = percent_error(d1, d2)
 
-    line_len = 200
-    len_d1 = 200 + (d1 * (line_len/larger))
-    len_d2 = 200 + (d2 * (line_len/larger))
-
-    draw.line([(200,20), (len_d1, 20)], fill = (255, 0, 0), width = 5)
-    draw.line([(200,30), (len_d2, 30)], fill = (0, 0, 255), width = 5)
+    draw.line([(280,20), (300 + d1, 20)], fill = (255, 0, 0), width = 5)
+    draw.line([(280,30), (300 + d2, 30)], fill = (0, 0, 255), width = 5)
 
     draw.text((10,20), "Distance: " + str(distance_set[num]), font=font, fill = (0,0,0))
     draw.text((10,30), "Baseline distance: " + str(d), font=font, fill = (0,0,0))
-    draw.text((10,40), "Percent error: " + str(percent_error) + "%", font=font, fill = (0,0,0))
+    draw.text((10,40), "Percent error: " + str(error) + "%", font=font, fill = (0,0,0))
     if num == 0:
         name = "greedy"
     elif num == 1:
@@ -131,7 +124,7 @@ def create_png(num, solution_set, distance_set, start_end, cities, d):
     else:
         name = "dynamic"
     filename = "tsp_" + name + ".png"
-    draw.text((10,10), "Algorithm used: " + name, font=font, fill = (0,0,0))
+    draw.text((10,10), "Algorithm used: " + name + ", time: " + str(t) + " seconds", font=font, fill = (0,0,0))
 
     del draw
     im.save(filename, "PNG")

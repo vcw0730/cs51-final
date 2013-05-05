@@ -218,26 +218,6 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         solution_lst[wst][r1], solution_lst[wst][r2] = solution_lst[wst][r2], solution_lst[wst][r1]
         return solution_lst
 
-    def mutation_simulatedAnnealing(solution_lst, g, initial):
-        """ choose solution from solution_lst at random, preserve best solution, remove
-            the worst solution and replace it with a mutation of a random solution """
-        bst = best_sol(solution_lst, g, initial)
-        wst = worst_sol(solution_lst, g, initial)
-        
-        # replace the worst solution with the best
-        solution_lst[wst] = solution_lst[bst]
-        
-        # mutate the copy solution by swapping two cities at random
-        length = len(solution_lst[wst])
-        r1 = random.randint(0, length - 1)
-        r2 = random.randint(0, length - 1)
-        while r1 == r2:
-            r1 = random.randint(0, length - 1)
-            r2 = random.randint(0, length - 1)
-        
-        solution_lst[wst][r1], solution_lst[wst][r2] = solution_lst[wst][r2], solution_lst[wst][r1]
-        return solution_lst
-
     def crossover(solution_lst, g, initial, cities):
         """ using helper functions, choose two parent solutions and crossover
             add child solution to solution_lst, increases size by one
@@ -249,11 +229,6 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         for i in range(len(solution_lst) - 1):
             x = choose_parents(solution_lst, g, initial)
             a = crossover_OX(x, cities)
-#            while a in child_pop:
-#                x = choose_parents(solution_lst, g, initial)
-#                a = crossover_greedy(x,cities)
-#                a = crossover_OX(x, cities)
-#                print "stalling ..."
             child_pop.append(a)
         return child_pop
         
@@ -272,20 +247,18 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             r = random.randint(0, 10)
             if r == 0:
                 newsols = mutation_random(newsols, g, start_end)
-#                newsols = mutation_simulatedAnnealing(newsols, g, start_end)
+#                newsols = mutation_hill(newsols, g, start_end)
 #            iterations = cities
 #            for each in range(len(newsols)):
-#                if r == 1:
-#                    newsols[each] = apply_hillclimb(newsols[each], start_end, iterations)
+#               newsols[each] = apply_hillclimb(newsols[each], start_end, iterations)
                 
         best = best_sol(newsols, g, start_end)
         t2 = time.time()
         total_time = round(t2 - t1,3)
 
         # change which one is active depending on which mutation/crossover is run
-#        gen_file.write("Time: " + str(total_time) + ". Genetic, random mutation, " + str(cities) + " cities, " + str(num) + " generations. \n")
+        gen_file.write("Time: " + str(total_time) + ". Genetic, random mutation, " + str(cities) + " cities, " + str(num) + " generations. \n")
 #        gen_file.write("Time: " + str(total_time) + ". Genetic, hill mutation, " + str(cities) + " cities, " + str(num) + " generations. \n")
-#        gen_file.write("Time: " + str(total_time) + ". Genetic, SA mutation, " + str(cities) + " cities, " + str(num) + " generations. \n")
 
 
         gen_file.write("Time: " + str(total_time) + ". Genetic, OX crossover, " + str(cities) + " cities, " + str(num) + " generations. \n")
