@@ -339,3 +339,4 @@ Time: 4.748. Genetic, OX crossover, hill mutation, with hill climbing disabled o
 Time: 10.644. Genetic, OX crossover, random mutation, with hill climbing enabled on 10 cities, 100 generations. 
 Time: 14.263. Genetic, OX crossover, random mutation, with hill climbing enabled on 10 cities, 1000 generations. 
 Time: 3.442. Genetic, OX crossover, hill mutation, with hill climbing disabled on 10 cities, 100 generations. 
+Time: 0.013. Genetic, OX crossover, random mutation, with hill climbing disabled on 5 cities, 10 generations. 

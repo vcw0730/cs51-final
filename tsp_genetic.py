@@ -284,14 +284,14 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
     if (cities < 3):
         return (locs, solution_len(locs, g, start_end))
     else:
+        cross_choice = int(raw_input("Which crossover would you like to use? \n 1: OX (default) \n 2: PMX \n 3: greedy \n --> "))
+        mut_choice = int(raw_input("Which mutation would you like to use? \n 1: random (default) \n 2: hill climbing \n --> "))
+        hill_choice = int(raw_input("Would you like to run hill climbing on each new population? \n 1: yes \n 2: no (default) \n --> "))
+
         t1 = time.time()
         newsols = gen_population(cities, locs, sols)
         best = best_sol(newsols, g, start_end)
         iterations = 25
-
-        cross_choice = int(raw_input("Which crossover would you like to use? \n 1: OX (default) \n 2: PMX \n 3: greedy \n --> "))
-        mut_choice = int(raw_input("Which mutation would you like to use? \n 1: random (default) \n 2: hill climbing \n --> "))
-        hill_choice = int(raw_input("Would you like to run hill climbing on each new population? \n 1: yes \n 2: no (default) \n --> "))
 
         for i in range(num):
             newsols = crossover(newsols, g, start_end, cities, cross_choice) 
@@ -335,4 +335,4 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         gen_file.write("Time: " + str(total_time) + ". Genetic, " + cross_name + " crossover, " + mut_name + " mutation, with hill climbing " + hill_enabled + " on " + str(cities) + " cities, " + str(num) + " generations. \n")
 
         gen_file.close()
-        return (newsols[best], solution_len(newsols[best],g,start_end))
+        return (newsols[best], solution_len(newsols[best],g,start_end), total_time)
