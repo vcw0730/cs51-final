@@ -85,7 +85,7 @@ def tsp_dynamic(g, start, num_vertices, vertices):
                             if dist < best_k[0]:
                                 best_k = (dist, (k, int(str(subvalue), 2) - 1))
                         D[j][subsets_dec - 1] = best_k
-
+        
         # lowest tour distance
         lowest = float("inf")
         # find at which city the tour ends
@@ -96,6 +96,7 @@ def tsp_dynamic(g, start, num_vertices, vertices):
             total_dist = D[final][total_num_subsets - 2][0] + g.graph[vertices[final]][start]
             if (total_dist) < lowest:
                 end_pt, total = (final, total_num_subsets - 2), total_dist
+                lowest = total_dist
 
 
         final = []    
