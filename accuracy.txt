@@ -48,3 +48,17 @@ genetic run on 15, distance of 365.807, percent error 2.44% with time 19.817 sec
 dynamic run on 15, distance of 357.079, percent error 0.0% with time 3.955 seconds.
 greedy run on 15, distance of 366.705, percent error 2.7% with time 0.0 seconds.
 greedy run on 15, distance of 366.705, percent error 2.7% with time 0.0 seconds.
+dynamic run on 5, distance of 241.052, percent error 0.0% with time 0.001 seconds.
+dynamic run on 5, distance of 262.426, percent error 0.0% with time 0.001 seconds.
+genetic run on 5, distance of 236.764, percent error 9.78% with time 1.275 seconds.
+greedy run on 5, distance of 236.764, percent error 9.78% with time 0.0 seconds.
+greedy run on 5, distance of 211.881, percent error 0.0% with time 0.0 seconds.
+genetic run on 5, distance of 202.462, percent error 4.45% with time 0.132 seconds.
+dynamic run on 5, distance of 211.881, percent error 0.0% with time 0.001 seconds.
+greedy run on 5, distance of 231.848, percent error 15.78% with time 0.0 seconds.
+genetic run on 5, distance of 200.243, percent error 0.0% with time 0.124 seconds.
+dynamic run on 5, distance of 200.243, percent error 0.0% with time 0.0 seconds.
+greedy run on 10, distance of 319.833, percent error 7.8% with time 0.0 seconds.
+genetic run on 10, distance of 333.643, percent error 12.46% with time 8.368 seconds.
+dynamic run on 10, distance of 296.683, percent error 0.0% with time 0.047 seconds.
+genetic run on 10, distance of 341.762, percent error 15.19% with time 8.477 seconds.

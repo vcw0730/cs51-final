@@ -319,3 +319,20 @@ Time: 22.613. Genetic, random mutation, 15 cities, 1000 generations.
 Time: 22.613. Genetic, PMX crossover, 15 cities, 1000 generations. 
 Time: 19.814. Genetic, random mutation, 15 cities, 1000 generations. 
 Time: 19.814. Genetic, PMX crossover, 15 cities, 1000 generations. 
+Time: 0.115. Genetic, random mutation, 5 cities, 100 generations. 
+Time: 0.115. Genetic, PMX crossover, 5 cities, 100 generations. 
+Time: 1.272. Genetic, random mutation, 5 cities, 1000 generations. 
+Time: 1.272. Genetic, PMX crossover, 5 cities, 1000 generations. 
+Time: 0.129. Genetic, random mutation, 5 cities, 100 generations. 
+Time: 0.129. Genetic, PMX crossover, 5 cities, 100 generations. 
+Time: 0.121. Genetic, random mutation, 5 cities, 100 generations. 
+Time: 0.121. Genetic, PMX crossover, 5 cities, 100 generations. 
+Time: 8.365. Genetic, random mutation, 10 cities, 1000 generations. 
+Time: 8.365. Genetic, PMX crossover, 10 cities, 1000 generations. 
+Time: 0.848. Genetic, random mutation, 10 cities, 100 generations. 
+Time: 0.848. Genetic, PMX crossover, 10 cities, 100 generations. 
+Time: 0.851. Genetic, random mutation, 10 cities, 100 generations. 
+Time: 0.851. Genetic, PMX crossover, 10 cities, 100 generations. 
+Time: 8.473. Genetic, random mutation, 10 cities, 1000 generations. 
+Time: 8.473. Genetic, PMX crossover, 10 cities, 1000 generations. 
+Time: 4.748. Genetic, OX crossover, hill mutation, with hill climbing disabled on 5 cities, 1 generations. 

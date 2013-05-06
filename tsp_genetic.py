@@ -279,7 +279,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         solution_lst[wst][r1], solution_lst[wst][r2] = solution_lst[wst][r2], solution_lst[wst][r1]
         return solution_lst
 
-    def crossover(solution_lst, g, initial, cities):
+    def crossover(solution_lst, g, initial, cities, choice):
         """ using helper functions, choose two parent solutions and crossover
             add child solution to solution_lst, increases size by one
             note - will add repeats"""
@@ -289,9 +289,12 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         # so that child population has the same number of solutions as the parent population
         for i in range(len(solution_lst) - 1):
             x = choose_parents(solution_lst, g, initial)
-#            a = crossover_OX(x, cities)
-#            a = crossover_greedy(x, cities)
-            a = crossover_PMX(x, cities)
+            if choice == 3:
+                a = crossover_greedy(x, cities)
+            elif choice == 2:
+                a = crossover_PMX(x, cities)
+            else: 
+                a = crossover_OX(x, cities)
             child_pop.append(a)
         return child_pop
         
@@ -306,28 +309,49 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         newsols = gen_population(cities, locs, sols)
         best = best_sol(newsols, g, start_end)
         iterations = 10
+        cross_choice = int(raw_input("Which crossover would you like to use? \n 1: OX (default) \n 2: PMX \n 3: greedy \n --> "))
+        mut_choice = int(raw_input("Which mutation would you like to use? \n 1: random (default) \n 2: hill \n --> "))
+        hill_choice = int(raw_input("Would you like to run hill climbing on each population? \n 1: yes \n 2: no (default) \n --> "))
         for i in range(num):
-            newsols = crossover(newsols, g, start_end, cities) # to change which crossover is used, go to def crossover itself
+            newsols = crossover(newsols, g, start_end, cities, cross_choice) 
             r = random.randint(0, 10)
             if r == 0:
-                newsols = mutation_random(newsols, g, start_end)
-#                newsols = mutation_hill(newsols, g, start_end)
-#            iterations = cities
-#            for each in range(len(newsols)):
-#               newsols[each] = apply_hillclimb(newsols[each], start_end, iterations)
+                if mut_choice == 2:
+                    newsols = mutation_hill(newsols, g, start_end)
+                else:
+                    newsols = mutation_random(newsols, g, start_end)
+            if hill_choice == 1:
+                for each in range(len(newsols)):
+                   newsols[each] = apply_hillclimb(newsols[each], start_end, iterations)
                 
         best = best_sol(newsols, g, start_end)
         t2 = time.time()
         total_time = round(t2 - t1,3)
 
         # change which one is active depending on which mutation/crossover is run
-        gen_file.write("Time: " + str(total_time) + ". Genetic, random mutation, " + str(cities) + " cities, " + str(num) + " generations. \n")
-#        gen_file.write("Time: " + str(total_time) + ". Genetic, hill mutation, " + str(cities) + " cities, " + str(num) + " generations. \n")
 
+        cross_name = None
+        mut_name = None
+        hill_enabled = None
 
-#        gen_file.write("Time: " + str(total_time) + ". Genetic, OX crossover, " + str(cities) + " cities, " + str(num) + " generations. \n")
-#        gen_file.write("Time: " + str(total_time) + ". Genetic, greedy crossover, " + str(cities) + " cities, " + str(num) + " generations. \n")
-        gen_file.write("Time: " + str(total_time) + ". Genetic, PMX crossover, " + str(cities) + " cities, " + str(num) + " generations. \n")
+        if cross_choice == 3:
+            cross_name = "greedy"
+        elif cross_choice == 2:
+            cross_name = "PMX"
+        else:
+            cross_name = "OX"
+
+        if mut_choice == 2:
+            mut_name = "hill"
+        else:
+            mut_name = "random"
+
+        if hill_choice == 1:
+            hill_enabled = "enabled"
+        else:
+            hill_enabled = "disabled"
+        
+        gen_file.write("Time: " + str(total_time) + ". Genetic, " + cross_name + " crossover, " + mut_name + " mutation, with hill climbing " + hill_enabled + " on " + str(cities) + " cities, " + str(num) + " generations. \n")
 
         gen_file.close()
         return (newsols[best], solution_len(newsols[best],g,start_end))
