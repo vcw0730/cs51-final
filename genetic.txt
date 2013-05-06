@@ -336,3 +336,6 @@ Time: 0.851. Genetic, PMX crossover, 10 cities, 100 generations.
 Time: 8.473. Genetic, random mutation, 10 cities, 1000 generations. 
 Time: 8.473. Genetic, PMX crossover, 10 cities, 1000 generations. 
 Time: 4.748. Genetic, OX crossover, hill mutation, with hill climbing disabled on 5 cities, 1 generations. 
+Time: 10.644. Genetic, OX crossover, random mutation, with hill climbing enabled on 10 cities, 100 generations. 
+Time: 14.263. Genetic, OX crossover, random mutation, with hill climbing enabled on 10 cities, 1000 generations. 
+Time: 3.442. Genetic, OX crossover, hill mutation, with hill climbing disabled on 10 cities, 100 generations. 

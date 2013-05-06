@@ -519,3 +519,9 @@ Greedy time: 0.0 for 10 cities
 Genetic time: 0.851 for 10 cities, 100 crossovers 
 Genetic time: 0.853 for 10 cities, 100 crossovers 
 Genetic time: 8.477 for 10 cities, 1000 crossovers 
+Genetic time: 10.646 for 10 cities, 100 crossovers 
+Dynamic, time: 0.037 for 10 cities 
+Genetic time: 14.265 for 10 cities, 1000 crossovers 
+Genetic time: 3.446 for 10 cities, 100 crossovers 
+Dynamic, time: 0.04 for 10 cities 
+Greedy time: 0.0 for 10 cities 

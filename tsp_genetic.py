@@ -242,7 +242,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
             the worst solution and replace it with a mutation of the best """
         wst = worst_sol(solution_lst, g, initial)
         worst = solution_lst[wst]
-        distance = solution_len(temp, g, start_end)
+        distance = solution_len(worst, g, start_end)
         iterations = 25
         while (iterations > 0):
             temp = worst
