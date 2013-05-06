@@ -265,19 +265,23 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
     def mutation_hill(solution_lst, g, initial):
         """ choose solution from solution_lst at random, preserve best solution, remove
             the worst solution and replace it with a mutation of the best """
-        bst = best_sol(solution_lst, g, initial)
         wst = worst_sol(solution_lst, g, initial)
-        
-        # replace the worst solution with the best
-        solution_lst[wst] = solution_lst[bst]
-        
-        # mutate the copy solution by swapping two cities at random
-        length = len(solution_lst[wst])
-        r1 = random.randint(0, length - 1)
-        r2 = random.randint(0, length - 1)
-        
-        solution_lst[wst][r1], solution_lst[wst][r2] = solution_lst[wst][r2], solution_lst[wst][r1]
+        worst = solution_lst[wst]
+        distance = solution_len(temp, g, start_end)
+        iterations = 25
+        while (iterations > 0):
+            temp = worst
+            r1 = random.randint(0, len(temp) - 1)
+            r2 = random.randint(0, len(temp) - 1)
+            temp[r1], temp[r2] = temp[r2], temp[r1]
+            temp_distance = solution_len(temp, g, start_end)
+            if distance < distance:
+                worst = temp
+                distance = temp_distance
+            iterations -= 1
+        solution_lst[wst] = worst
         return solution_lst
+
 
     def crossover(solution_lst, g, initial, cities, choice):
         """ using helper functions, choose two parent solutions and crossover
