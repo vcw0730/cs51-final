@@ -174,31 +174,6 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
                             y = nondonor[donor.index(y)]
                         child[j] = y
 
-        """
-        # insert non-conflicting alleles from nondonor into child
-        for i in nondonor:
-            if (i not in swath1) and (i not in swath2):
-                child[nondonor.index(i)] = i
-
-        def cross_value(donor, nondonor, ind):
-            match = nondonor[ind]
-            donor_index = donor.index(match)
-            x = nondonor[donor_index]
-            return x
-
-
-        # fill in rest of child
-        for i in range(len(child)):
-            if child[i] == None:
-                x = cross_value(donor, nondonor, i)
-                x1 = x
-                while x in swath1 or x in swath2:
-                    x = cross_value(donor, nondonor, x[2])
-                    print x, child
-                assert x not in child
-                child[i] = x
-        """
-
         return child
 
     def apply_hillclimb(solution, start_end, iterations):
@@ -308,10 +283,12 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
         t1 = time.time()
         newsols = gen_population(cities, locs, sols)
         best = best_sol(newsols, g, start_end)
-        iterations = 10
+        iterations = 25
+
         cross_choice = int(raw_input("Which crossover would you like to use? \n 1: OX (default) \n 2: PMX \n 3: greedy \n --> "))
-        mut_choice = int(raw_input("Which mutation would you like to use? \n 1: random (default) \n 2: hill \n --> "))
-        hill_choice = int(raw_input("Would you like to run hill climbing on each population? \n 1: yes \n 2: no (default) \n --> "))
+        mut_choice = int(raw_input("Which mutation would you like to use? \n 1: random (default) \n 2: hill climbing \n --> "))
+        hill_choice = int(raw_input("Would you like to run hill climbing on each new population? \n 1: yes \n 2: no (default) \n --> "))
+
         for i in range(num):
             newsols = crossover(newsols, g, start_end, cities, cross_choice) 
             r = random.randint(0, 10)
@@ -326,7 +303,7 @@ def tsp_genetic(num, sols, g, start_end, cities, locs):
                 
         best = best_sol(newsols, g, start_end)
         t2 = time.time()
-        total_time = round(t2 - t1,3)
+        total_time = round(t2 - t1,4)
 
         # change which one is active depending on which mutation/crossover is run
 
